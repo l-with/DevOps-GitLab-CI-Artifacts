@@ -1,6 +1,6 @@
 get_template_for_container_scanning:
   image: 
-    name: alpine:latest
+    name: ubuntu:20.04
   script:
     # download template
     - cd 
