@@ -39,6 +39,7 @@ container_scanning:
     # update vulnerabilities db
     - time trivy --download-db-only --no-progress
     # Build reports
+    - ls -l /var/run/docker.sock
     - time trivy image --exit-code 0 --no-progress --format template --template "@html.tpl" --output gl-container-scanning-report.html "$FULL_IMAGE_NAME"
     - time trivy image --exit-code 0 --no-progress --format template --template "@gitlab.tpl" --output gl-container-scanning-report.json "$FULL_IMAGE_NAME"
     # Prints full report
