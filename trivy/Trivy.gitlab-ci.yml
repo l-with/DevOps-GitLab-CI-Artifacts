@@ -9,11 +9,13 @@ prepare_scanning:
     # install curl
     - apt-get update -y
     - apt-get install curl -y
-    # download template
+    # download templates
     - time curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/html.tpl
+    - time curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/gitlab.tpl
   cache:
     paths:
       - html.tpl
+      - gitlab.tpl
 
 container_scanning:
   image:
@@ -36,8 +38,9 @@ container_scanning:
     - time trivy --clear-cache
     # update vulnerabilities db
     - time trivy --download-db-only --no-progress
-    # Builds report and puts it in the default workdir $CI_PROJECT_DIR, so `artifacts:` can take it from there
+    # Build reports
     - time trivy image --exit-code 0 --no-progress --format template --template "@html.tpl" --output gl-container-scanning-report.html "$FULL_IMAGE_NAME"
+    - time trivy image --exit-code 0 --no-progress --format template --template "@gitlab.tpl" --output gl-container-scanning-report.json "$FULL_IMAGE_NAME"
     # Prints full report
     - time trivy image --exit-code 0 --no-progress "$FULL_IMAGE_NAME"
     # Fail on critical vulnerabilities
@@ -45,6 +48,7 @@ container_scanning:
   cache:
     paths:
       - gl-container-scanning-report.html
+      - gl-container-scanning-report.json
 
 pages:
   image: 
@@ -57,10 +61,12 @@ pages:
   script:
     - mkdir .public
     - cp gl-container-scanning-report.html .public
+    - cp gl-container-scanning-report.json .public
     - mv .public public
   cache:
     paths:
       - gl-container-scanning-report.html
+      - gl-container-scanning-report.json
   artifacts:
     paths:
       - public
