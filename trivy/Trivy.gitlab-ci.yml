@@ -41,3 +41,14 @@ container_scanning:
   cache:
     paths:
       - $TRIVY_CACHE
+
+pages:
+  image: 
+    name: ubuntu:20.04
+  script:
+    - mkdir .public
+    - cp "$CI_PROJECT_DIR/${TRIVYCACHE}gl-container-scanning-report.html" .public
+    - mv .public public
+  artifacts:
+    paths:
+      - public
