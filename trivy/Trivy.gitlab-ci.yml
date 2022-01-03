@@ -10,7 +10,7 @@ container_scanning:
     TRIVY_PASSWORD: "$CI_REGISTRY_PASSWORD"
     TRIVY_AUTH_URL: "$CI_REGISTRY"
     TRIVY_CACHE: ".trivycache/"
-    FULL_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    FULL_IMAGE_NAME: $CI_REGISTRY_IMAGE:$IMAGE_TAG
   script:
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
