@@ -45,6 +45,8 @@ container_scanning:
 pages:
   image: 
     name: ubuntu:20.04
+  needs:
+    - container_scanning
   script:
     - mkdir .public
     - cp "$CI_PROJECT_DIR/${TRIVYCACHE}gl-container-scanning-report.html" .public
