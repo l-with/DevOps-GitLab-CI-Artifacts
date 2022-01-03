@@ -41,6 +41,7 @@ container_scanning:
   cache:
     paths:
       - $TRIVY_CACHE
+      - "$CI_PROJECT_DIR/${TRIVYCACHE}gl-container-scanning-report.html"
 
 pages:
   image: 
