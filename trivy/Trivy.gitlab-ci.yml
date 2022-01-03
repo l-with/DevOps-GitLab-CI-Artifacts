@@ -53,6 +53,7 @@ pages:
     GIT_STRATEGY: none
   script:
     - mkdir .public
+    - ls "$CI_PROJECT_DIR/.trivy-cache"
     - cp "$CI_PROJECT_DIR/.trivy-cache/gl-container-scanning-report.html" .public
     - mv .public public
   cache:
