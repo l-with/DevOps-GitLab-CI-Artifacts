@@ -2,6 +2,7 @@
 prepare_scanning:
   image: 
     name: ubuntu:20.04
+  stage: test
   variables:
     GIT_STRATEGY: none
   script:
@@ -18,6 +19,7 @@ container_scanning:
   image:
     name: docker.io/aquasec/trivy:latest
     entrypoint: [""]
+  stage: test
   needs:
     - prepare_scanning
   variables:
@@ -40,7 +42,6 @@ container_scanning:
     - time trivy image --exit-code 0 --no-progress "$FULL_IMAGE_NAME"
     # Fail on critical vulnerabilities
     - time trivy image --exit-code 1 --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
-    - cat gl-container-scanning-report.html
   cache:
     paths:
       - gl-container-scanning-report.html
@@ -48,6 +49,7 @@ container_scanning:
 pages:
   image: 
     name: ubuntu:20.04
+  stage: test
   needs:
     - container_scanning
   variables:
