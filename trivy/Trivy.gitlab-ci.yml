@@ -13,6 +13,8 @@ container_scanning:
   image:
     name: docker.io/aquasec/trivy:latest
     entrypoint: [""]
+  needs:
+    - get_template_for_container_scanning
   variables:
     # No need to clone the repo, we exclusively work on artifacts.  See
     # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
