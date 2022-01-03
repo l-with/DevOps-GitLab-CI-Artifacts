@@ -1,3 +1,14 @@
+get_template_for_container_scanning:
+  image: 
+    name: alpine:latest
+  script:
+    # download template
+    - cd 
+    - time curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/html.tpl
+  cache:
+    paths:
+      - html.tpl
+
 container_scanning:
   image:
     name: docker.io/aquasec/trivy:latest
@@ -16,8 +27,6 @@ container_scanning:
     - time trivy image --clear-cache
     # update vulnerabilities db
     - time trivy --download-db-only --no-progress --cache-dir $TRIVY_CACHE
-    # download template
-    - time curl https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/html.tpl
     # Builds report and puts it in the default workdir $CI_PROJECT_DIR, so `artifacts:` can take it from there
     - time trivy --exit-code 0 --cache-dir $TRIVY_CACHE --no-progress --format template --template "@html.tpl" 
       --output "$CI_PROJECT_DIR/${TRIVYCACHE}gl-container-scanning-report.html" image "$FULL_IMAGE_NAME"
