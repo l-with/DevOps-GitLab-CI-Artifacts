@@ -1,2 +1,6 @@
 # VS Code
 .dccache
+
+# try
+/trivy/.trivycache
+/trivy/gl-container-scanning-report.*
