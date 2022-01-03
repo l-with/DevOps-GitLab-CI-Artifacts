@@ -2,6 +2,8 @@ prepare_scanning:
   image: 
     name: ubuntu:20.04
   script:
+    # install curl
+    - apt install curl
     # download template
     - time curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/html.tpl
   cache:
