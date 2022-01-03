@@ -35,14 +35,14 @@ container_scanning:
     - time trivy --download-db-only --no-progress --cache-dir .trivy-cache/
     # Builds report and puts it in the default workdir $CI_PROJECT_DIR, so `artifacts:` can take it from there
     - time trivy --exit-code 0 --cache-dir .trivy-cache/ --no-progress --format template --template "@html.tpl" 
-      --output "$CI_PROJECT_DIR/.trivy-cache/gl-container-scanning-report.html" image "$FULL_IMAGE_NAME"
+      --output gl-container-scanning-report.html image "$FULL_IMAGE_NAME"
     # Prints full report
     - time trivy --exit-code 0 --cache-dir .trivy-cache/ --no-progress image "$FULL_IMAGE_NAME"
     # Fail on critical vulnerabilities
     - time trivy --exit-code 1 --cache-dir .trivy-cache/ --severity CRITICAL --no-progress image "$FULL_IMAGE_NAME"
   cache:
     paths:
-      - .trivy-cache/
+      - gl-container-scanning-report.html
 
 pages:
   image: 
@@ -53,12 +53,11 @@ pages:
     GIT_STRATEGY: none
   script:
     - mkdir .public
-    - ls "$CI_PROJECT_DIR/.trivy-cache"
-    - cp "$CI_PROJECT_DIR/.trivy-cache/gl-container-scanning-report.html" .public
+    - cp gl-container-scanning-report.html .public
     - mv .public public
   cache:
     paths:
-      - .trivy-cache/
+      - gl-container-scanning-report.html
   artifacts:
     paths:
       - public
