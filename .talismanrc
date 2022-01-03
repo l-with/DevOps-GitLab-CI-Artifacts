@@ -1,0 +1,6 @@
+fileignoreconfig:
+
+- filename: trivy/Trivy.gitlab-ci.yml
+  allowed_patterns:
+  - >
+    TRIVY_PASSWORD: "\$CI_REGISTRY_PASSWORD"
