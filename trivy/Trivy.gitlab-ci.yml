@@ -10,22 +10,21 @@ container_scanning:
     TRIVY_PASSWORD: "$CI_REGISTRY_PASSWORD"
     TRIVY_AUTH_URL: "$CI_REGISTRY"
     TRIVY_CACHE: ".trivycache/"
-    FULL_IMAGE_NAME: $CI_REGISTRY_IMAGE:$IMAGE_TAG
   script:
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
     - time trivy image --clear-cache
     # update vulnerabilities db
-    - time trivy --download-db-only --no-progress --cache-dir $TRIVYCACHE
+    - time trivy --download-db-only --no-progress --cache-dir $TRIV_YCACHE
     # download template
     - time curl https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/html.tpl
     # Builds report and puts it in the default workdir $CI_PROJECT_DIR, so `artifacts:` can take it from there
-    - time trivy --exit-code 0 --cache-dir $TRIVYCACHE --no-progress --format template --template "@html.tpl" 
+    - time trivy --exit-code 0 --cache-dir $TRIVY_CACHE --no-progress --format template --template "@html.tpl" 
       --output "$CI_PROJECT_DIR/${TRIVYCACHE}gl-container-scanning-report.html" image "$FULL_IMAGE_NAME"
     # Prints full report
-    - time trivy --exit-code 0 --cache-dir $TRIVYCACHE --no-progress image "$FULL_IMAGE_NAME"
+    - time trivy --exit-code 0 --cache-dir $TRIVY_CACHE --no-progress image "$FULL_IMAGE_NAME"
     # Fail on critical vulnerabilities
-    - time trivy --exit-code 1 --cache-dir $TRIVYCACHE --severity CRITICAL --no-progress image "$FULL_IMAGE_NAME"
+    - time trivy --exit-code 1 --cache-dir $TRIVY_CACHE --severity CRITICAL --no-progress image "$FULL_IMAGE_NAME"
   cache:
     paths:
-      - $TRIVYCACHE
+      - $TRIVY_CACHE
