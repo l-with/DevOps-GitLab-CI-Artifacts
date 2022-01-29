@@ -40,34 +40,14 @@ container_scanning:
     # update vulnerabilities db
     - time trivy --download-db-only --no-progress
     # Build reports
-    - time trivy image --exit-code 0 --no-progress --format template --template "@html.tpl" --output gl-container-scanning-report.html "$FULL_IMAGE_NAME"
-    - time trivy image --exit-code 0 --no-progress --format template --template "@gitlab.tpl" --output gl-container-scanning-report.json "$FULL_IMAGE_NAME"
+    - export _TRIVY_REPORTS_DIR=${TRIVY_REPORTS_DIR:-.trivy-reports}
+    - time trivy image --exit-code 0 --no-progress --format template --template "@html.tpl" --output ${_TRIVY_REPORTS_DIR}/gl-container-scanning-report.html "$FULL_IMAGE_NAME"
+    - time trivy image --exit-code 0 --no-progress --format template --template "@gitlab.tpl" --output ${_TRIVY_REPORTS_DIR}/gl-container-scanning-report.json "$FULL_IMAGE_NAME"
     # Prints full report
     - time trivy image --exit-code 0 --no-progress "$FULL_IMAGE_NAME"
     # Fail on critical vulnerabilities
     - time trivy image --exit-code 1 --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
   cache:
     paths:
-      - gl-container-scanning-report.html
-      - gl-container-scanning-report.json
+      - ${_TRIVY_REPORTS_DIR}/
   
-pages:
-  image: 
-    name: ubuntu:20.04
-  stage: test
-  needs:
-    - container_scanning
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - mkdir .public
-    - cp gl-container-scanning-report.html .public
-    - cp gl-container-scanning-report.json .public
-    - mv .public public
-  cache:
-    paths:
-      - gl-container-scanning-report.html
-      - gl-container-scanning-report.json
-  artifacts:
-    paths:
-      - public
