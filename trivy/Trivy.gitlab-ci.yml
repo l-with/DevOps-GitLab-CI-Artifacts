@@ -46,6 +46,10 @@ container_scanning:
     - time trivy image --exit-code 0 --no-progress "$FULL_IMAGE_NAME"
     # Fail on critical vulnerabilities
     - time trivy image --exit-code 1 --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
+  cache:
+    paths:
+      - html.tpl
+      - gitlab.tpl
   artifacts:
     expire_in: 1h
     paths:
