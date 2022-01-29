@@ -44,7 +44,8 @@ container_scanning:
     # Prints full report
     - time trivy image --exit-code 0 --no-progress "$FULL_IMAGE_NAME"
     # Fail on critical vulnerabilities
-    - time trivy image --exit-code 1 --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
+    - export _TRIVY_EXIT_CODE_CRITICAL=${TRIVY_EXIT_CODE_CRITICAL:-1}
+    - time trivy image --exit-code ${_TRIVY_EXIT_CODE_CRITICAL} --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
   cache:
     paths:
       - gl-container-scanning-report.html

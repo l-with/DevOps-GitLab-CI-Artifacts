@@ -11,3 +11,5 @@ The HTML template `html.tpl` is copied from https://github.com/aquasecurity/triv
 The report is placed in `$CI_PROJECT_DIR/.trivy/gl-container-scanning-report.html`.
 
 The full image name has to be placed in `$FULL_IMAGE_NAME`.
+
+The exit code on critcal severity can overidden by TRIVY_EXIT_CODE_CRITICAL.
