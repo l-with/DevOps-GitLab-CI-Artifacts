@@ -11,7 +11,7 @@ prepare_scanning:
     GIT_STRATEGY: none
   image: 
     name: ubuntu:20.04
-  stage: test
+  stage: scan
   script:
     # install curl
     - apt-get update -y
@@ -32,7 +32,7 @@ container_scanning:
   image:
     name: docker.io/aquasec/trivy:latest
     entrypoint: [""]
-  stage: test
+  stage: scan
   needs:
     - prepare_scanning
   script:
@@ -64,7 +64,7 @@ container_checking:
   image:
     name: docker.io/aquasec/trivy:latest
     entrypoint: [""]
-  stage: test
+  stage: scan
   needs:
     - prepare_scanning
   script:
