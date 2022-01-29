@@ -1,4 +1,3 @@
-
 prepare_scanning:
   image: 
     name: ubuntu:20.04
@@ -46,7 +45,8 @@ container_scanning:
     - time trivy image --exit-code 0 --no-progress "$FULL_IMAGE_NAME"
     # Fail on critical vulnerabilities
     - time trivy image --exit-code 1 --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
-  cache:
+  artifacts:
+    name: "$CI_JOB_NAME"
     paths:
       - .trivy-reports/
   
