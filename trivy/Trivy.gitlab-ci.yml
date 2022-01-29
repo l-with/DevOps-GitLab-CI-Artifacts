@@ -35,10 +35,11 @@ container_scanning:
   script:
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
-    - time trivy --clear-cache
+    - time trivy image --clear-cache
     # update vulnerabilities db
-    - time trivy --download-db-only --no-progress
+    - time trivy image --download-db-only --no-progress
     # Build reports
+    - time mkdir .trivy-reports
     - time trivy image --exit-code 0 --no-progress --format template --template "@html.tpl" --output .trivy-reports/gl-container-scanning-report.html "$FULL_IMAGE_NAME"
     - time trivy image --exit-code 0 --no-progress --format template --template "@gitlab.tpl" --output .trivy-reports/gl-container-scanning-report.json "$FULL_IMAGE_NAME"
     # Prints full report
@@ -46,7 +47,7 @@ container_scanning:
     # Fail on critical vulnerabilities
     - time trivy image --exit-code 1 --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
   artifacts:
-    name: "$CI_JOB_NAME"
+    expire_in: 1h
     paths:
       - .trivy-reports/
   
