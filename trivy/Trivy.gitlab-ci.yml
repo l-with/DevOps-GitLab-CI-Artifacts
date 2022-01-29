@@ -32,6 +32,7 @@ container_scanning:
     TRIVY_PASSWORD: "$CI_REGISTRY_PASSWORD"
     TRIVY_AUTH_URL: "$CI_REGISTRY"
     TRIVY_CACHE: .trivycache
+  allow_failure: true
   script:
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
@@ -44,13 +45,12 @@ container_scanning:
     # Prints full report
     - time trivy image --exit-code 0 --no-progress "$FULL_IMAGE_NAME"
     # Fail on critical vulnerabilities
-    - export _TRIVY_EXIT_CODE_CRITICAL=${TRIVY_EXIT_CODE_CRITICAL:-1}
-    - time trivy image --exit-code ${_TRIVY_EXIT_CODE_CRITICAL} --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
+    - time trivy image --exit-code 1 --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
   cache:
     paths:
       - gl-container-scanning-report.html
       - gl-container-scanning-report.json
-
+  
 pages:
   image: 
     name: ubuntu:20.04
