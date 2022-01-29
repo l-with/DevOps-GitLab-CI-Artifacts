@@ -4,37 +4,15 @@ variables:
   TRIVY_AUTH_URL: "$CI_REGISTRY"
   TRIVY_CACHE: .trivycache
 
-prepare_scanning:
-  variables:
-    # No need to clone the repo, we exclusively work on artifacts.  See
-    # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
-    GIT_STRATEGY: none
-  image: 
-    name: ubuntu:20.04
-  stage: scan
-  script:
-    # install curl
-    - apt-get update -y
-    - apt-get install curl -y
-    # download templates
-    - time curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/html.tpl
-    - time curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/gitlab.tpl
-  cache:
-    paths:
-      - html.tpl
-      - gitlab.tpl
-
 container_scanning:
   variables:
     # No need to clone the repo, we exclusively work on artifacts.  See
     # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
     GIT_STRATEGY: none
   image:
-    name: docker.io/aquasec/trivy:latest
+    name: bitnami/trivy:latest
     entrypoint: [""]
   stage: scan
-  needs:
-    - prepare_scanning
   script:
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
@@ -62,11 +40,9 @@ container_checking:
     # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
     GIT_STRATEGY: none
   image:
-    name: docker.io/aquasec/trivy:latest
+    name: bitnami/trivy:latest
     entrypoint: [""]
   stage: scan
-  needs:
-    - prepare_scanning
   script:
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
