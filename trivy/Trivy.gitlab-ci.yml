@@ -31,7 +31,6 @@ container_scanning:
     TRIVY_PASSWORD: "$CI_REGISTRY_PASSWORD"
     TRIVY_AUTH_URL: "$CI_REGISTRY"
     TRIVY_CACHE: .trivycache
-  allow_failure: true
   script:
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
@@ -46,6 +45,8 @@ container_scanning:
     - time trivy image --exit-code 0 --no-progress "$FULL_IMAGE_NAME"
     # Fail on critical vulnerabilities
     - time trivy image --exit-code 1 --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
+  allow_failure:
+    exit_codes: 1
   cache:
     paths:
       - html.tpl
