@@ -91,6 +91,7 @@
       {{- else }}
       <tr class="sub-header">
         <th>Package</th>
+        <th>Image</th>
         <th>Vulnerability ID</th>
         <th>Severity</th>
         <th>Installed Version</th>
@@ -100,6 +101,7 @@
         {{- range .Vulnerabilities }}
       <tr class="severity-{{ escapeXML .Vulnerability.Severity }}">
         <td class="pkg-name">{{ escapeXML .PkgName }}</td>
+        <td class="target">{{ escapeXML .Target }}</td>
         <td>{{ escapeXML .VulnerabilityID }}</td>
         <td class="severity">{{ escapeXML .Vulnerability.Severity }}</td>
         <td class="pkg-version">{{ escapeXML .InstalledVersion }}</td>
