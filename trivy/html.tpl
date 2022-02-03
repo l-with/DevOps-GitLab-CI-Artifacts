@@ -3,7 +3,6 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 {{- if . }}
-  {{- $target := .Target }}
     <style>
       * {
         font-family: Arial, Helvetica, sans-serif;
@@ -86,6 +85,7 @@
     <h1>{{- escapeXML ( index . 0 ).Target }} - Trivy Report - {{ now }}</h1>
     <table>
     {{- range . }}
+      {{- $target := .Target }}
       <tr class="group-header"><th colspan="6">{{ escapeXML .Type }}</th></tr>
       {{- if (eq (len .Vulnerabilities) 0) }}
       <tr><th colspan="6">No Vulnerabilities found</th></tr>
