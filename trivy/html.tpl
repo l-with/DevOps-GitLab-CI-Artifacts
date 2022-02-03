@@ -3,6 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 {{- if . }}
+  {{- $target := .Target }}
     <style>
       * {
         font-family: Arial, Helvetica, sans-serif;
@@ -101,7 +102,7 @@
         {{- range .Vulnerabilities }}
       <tr class="severity-{{ escapeXML .Vulnerability.Severity }}">
         <td class="pkg-name">{{ escapeXML .PkgName }}</td>
-        <td class="target">{{ escapeXML .Target }}</td>
+        <td class="target">{{ escapeXML $target }}</td>
         <td>{{ escapeXML .VulnerabilityID }}</td>
         <td class="severity">{{ escapeXML .Vulnerability.Severity }}</td>
         <td class="pkg-version">{{ escapeXML .InstalledVersion }}</td>
