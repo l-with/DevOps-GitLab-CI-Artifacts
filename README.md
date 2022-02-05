@@ -11,3 +11,39 @@ The HTML and the JSON templates are copied from https://github.com/aquasecurity/
 The reports are placed in `$CI_PROJECT_DIR/.trivy-reports`.
 
 The full image name has to be placed in `$FULL_IMAGE_NAME`.
+
+## vault
+
+The CI snippet puts the shell script `vault_secrets.sh` into artifacts.
+
+The shell script `vault_secrets.sh` interpretes a yaml file describing vault secrets, for instance:
+
+```yaml
+secrets:
+  - VAULT_AUTH_ROLE: terraform
+    SSH_PRIVATE_KEY:
+      vault: ssh/ssh_private_key@gitlab
+    TF_VAR_ssh_key_name:
+      vault: ssh/ssh_key_name@gitlab
+    DNS_API_TOKEN:
+      vault: dns/dns_api_token@gitlab
+  - VAULT_AUTH_ROLE: application
+    APPLICATION_REGISTRY_AUTH:
+      vault: applications/registry_auth@gitlab
+    TEST_LONG_PATH:
+      vault: applications/subfolder/test_long_path@gitlab    
+```
+
+There are two usages:
+
+```bash
+./vault_secrets vault-yml | sh
+```
+
+shows the commands produced by `vault_secrets.sh`.
+
+```bash
+./vault_secrets vault-yml | sh | sh
+```
+
+executes the commands produced by `vault_secrets.sh`.
