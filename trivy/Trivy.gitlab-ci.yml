@@ -9,13 +9,10 @@ prepare_scanning:
     # No need to clone the repo, we exclusively work on artifacts.  See
     # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
     GIT_STRATEGY: none
-  image: 
-    name: ubuntu:20.04
+  image:
+    name: lwith/gitlab-devops:1.1.12
   stage: scan
   script:
-    # install curl
-    - apt-get update -y
-    - apt-get install curl -y
     # download templates
     - time curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/html.tpl
     - time curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/gitlab.tpl
