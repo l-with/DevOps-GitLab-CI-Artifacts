@@ -12,9 +12,13 @@ The reports are placed in `$CI_PROJECT_DIR/.trivy-reports`.
 
 The full image name has to be placed in `$FULL_IMAGE_NAME`.
 
+The jobs are assigned to stage `scan`.
+
 ## vault
 
 The CI snippet puts the shell script `vault_secrets.sh` into artifacts.
+
+The job is assigned to stage `vault_secrets_sh`.
 
 The shell script `vault_secrets.sh` interpretes a yaml file describing vault secrets, for instance:
 
