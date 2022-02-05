@@ -1,0 +1,3 @@
+exclude_paths:
+    Trivy.gitlab-ci.yml
+    Vault.gitlab-ci.yml
