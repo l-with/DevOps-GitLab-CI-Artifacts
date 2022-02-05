@@ -1,0 +1,11 @@
+vault_secrets_sh:
+  variables:
+    # No need to clone the repo, we exclusively work on artifacts.  See
+    # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
+    GIT_STRATEGY: none
+  script:
+    - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vauklt/vault_secrets.sh
+    - chmod +x vault_secrets.sh
+  cache:
+    paths:
+      - vault_secrets.sh
