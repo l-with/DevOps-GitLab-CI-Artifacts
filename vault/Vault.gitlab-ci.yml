@@ -7,6 +7,7 @@ vault_secrets_sh:
   script:
     - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vauklt/vault_secrets.sh
     - chmod +x vault_secrets.sh
-  cache:
+  artifacts:
+    expire_in: 1h
     paths:
       - vault_secrets.sh
