@@ -16,7 +16,7 @@ The jobs are assigned to stage `scan`.
 
 ## vault
 
-The CI snippet puts the shell script `vault_secrets.sh` into artifacts.
+The CI snippet puts the shell script `vault_secrets.sh` into the cache.
 
 The job is assigned to stage `vault_secrets_sh`.
 
