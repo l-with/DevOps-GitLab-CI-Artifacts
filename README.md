@@ -18,7 +18,8 @@ The jobs are assigned to stage `scan`.
 
 The CI snippet puts the shell script `vault_secrets.sh` into artifacts.
 
-The 
+The purpose is to simplify fetching secrets from vault.
+
 If in a job other artifacts are defined, use
 
 ```yaml
