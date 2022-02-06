@@ -54,7 +54,7 @@ The syntax is closely related to [Use Vault secrets in a CI job](https://docs.gi
 There are two usages:
 
 ```bash
-./vault_secrets secrets.yml
+./vault_secrets.sh secrets.yml
 ```
 
 shows the commands produced by `vault_secrets.sh`.
@@ -72,4 +72,14 @@ It is a good pratice to use [YAML anchors for scripts](https://docs.gitlab.com/e
 ```yaml
 .before-script-vault: &before-script-vault
   - ./vault_secrets.sh secrets.yml >.secrets && . .secrets && rm .secrets
+```
+
+### Markdown
+
+The CI snippet also puts the shell script `vault_secrets_md.sh` into artifacts.
+This script outputs a Markdown table documenting the secrets.
+This output can pasted into the `README.md` of the project for documentation purpose.
+
+```bash
+./vault_secrets_md.sh secrets.yml
 ```
