@@ -49,13 +49,13 @@ secrets:
 There are two usages:
 
 ```bash
-./vault_secrets vault-yml
+./vault_secrets secrets.yml
 ```
 
 shows the commands produced by `vault_secrets.sh`.
 
 ```bash
-./vault_secrets.sh secrets.yml >.vault_secrets && . .vault_secrets
+./vault_secrets.sh secrets.yml >.secrets && . .secrets && rm .secrets
 ```
 
 executes the commands produced by `vault_secrets.sh` in the execution context.

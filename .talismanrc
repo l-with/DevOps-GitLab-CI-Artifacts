@@ -11,4 +11,4 @@ fileignoreconfig:
 - filename: README.md
   allowed_patterns:
   - >
-    ./vault_secrets.sh secrets.yml >.vault_secrets && . .vault_secrets
+    ./vault_secrets.sh secrets.yml >.secrets && . .secrets && rm .secrets
