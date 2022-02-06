@@ -51,3 +51,5 @@ shows the commands produced by `vault_secrets.sh`.
 ```
 
 executes the commands produced by `vault_secrets.sh`.
+
+You have to set `VAULT_ADDR` and possibly `VAULT_CACERT` for using `vault_secrets.sh`.
