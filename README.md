@@ -46,6 +46,8 @@ secrets:
       vault: applications/subfolder/test_long_path@gitlab    
 ```
 
+The syntax is closely related to [Use Vault secrets in a CI job](https://docs.gitlab.com/ee/ci/secrets/index.html#use-vault-secrets-in-a-ci-job) in GitLab Premium.
+
 There are two usages:
 
 ```bash

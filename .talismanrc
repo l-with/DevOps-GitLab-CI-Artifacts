@@ -12,3 +12,6 @@ fileignoreconfig:
   allowed_patterns:
   - >
     ./vault_secrets.sh secrets.yml >.secrets && . .secrets && rm .secrets
+  - >
+    .*Use Vault secrets in a CI job.*
+
