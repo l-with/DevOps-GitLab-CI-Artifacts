@@ -63,3 +63,10 @@ shows the commands produced by `vault_secrets.sh`.
 executes the commands produced by `vault_secrets.sh` in the execution context.
 
 You have to set `VAULT_ADDR` and possibly `VAULT_CACERT` for using `vault_secrets.sh`.
+
+It is a good pratice to use [YAML anchors for scripts](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#yaml-anchors-for-scripts) by defining in the CI definition
+
+```yaml
+.before-script-vault: &before-script-vault
+  - ./vault_secrets.sh secrets.yml >.secrets && . .secrets && rm .secrets
+```
