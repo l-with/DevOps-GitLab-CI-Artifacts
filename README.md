@@ -17,6 +17,14 @@ The jobs are assigned to stage `scan`.
 ## vault
 
 The CI snippet puts the shell script `vault_secrets.sh` into artifacts.
+If in a job ohter artifacts are defined, use
+
+```yaml
+  dependencies:
+    - vault_secrets_sh
+```
+
+to ensure fetching `vault_secrets.sh` from artifacts.
 
 The job is assigned to stage `vault_secrets_sh`.
 
