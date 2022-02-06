@@ -41,15 +41,15 @@ secrets:
 There are two usages:
 
 ```bash
-./vault_secrets vault-yml | sh
+./vault_secrets vault-yml
 ```
 
 shows the commands produced by `vault_secrets.sh`.
 
 ```bash
-./vault_secrets vault-yml | sh | sh
+./vault_secrets.sh secrets.yml >.vault_secrets && . .vault_secrets
 ```
 
-executes the commands produced by `vault_secrets.sh`.
+executes the commands produced by `vault_secrets.sh` in the execution context.
 
 You have to set `VAULT_ADDR` and possibly `VAULT_CACERT` for using `vault_secrets.sh`.

@@ -6,4 +6,9 @@ fileignoreconfig:
     TRIVY_PASSWORD: "\$CI_REGISTRY_PASSWORD"
 
 - filename: vault/vault_secrets.sh
-  ignore_detectors: [filecontent]
+  checksum: 8a6be4419ecd07e5fab762cc55afd4bd1c4f71c8be2cd944ff4bef69502c1566
+
+- filename: README.md
+  allowed_patterns:
+  - >
+    ./vault_secrets.sh secrets.yml >.vault_secrets && . .vault_secrets
