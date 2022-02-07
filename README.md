@@ -83,3 +83,13 @@ This output can pasted into the `README.md` of the project for documentation pur
 ```bash
 ./vault_secrets_md.sh secrets.yml
 ```
+
+For the secrets yaml example above the result is
+
+| variable | role | path | field |
+| --- | --- | --- | --- |
+| SSH_PRIVATE_KEY | terraform | gitlab/ssh | ssh_private_key |
+| TF_VAR_ssh_key_name | terraform | gitlab/ssh | ssh_key_name |
+| DNS_API_TOKEN | terraform | gitlab/dns | dns_api_token |
+| APPLICATION_REGISTRY_AUTH | application | gitlab/applications | registry_auth |
+| TEST_LONG_PATH | application | gitlab/applications/subfolder | test_long_path |
