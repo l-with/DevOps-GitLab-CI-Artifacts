@@ -1,5 +1,5 @@
 #!/bin/sh
-echo "| variable | role | path | field |"
+echo "| role | variable | option | path |"
 echo "| --- | --- | --- | --- |"
 cat $1 |\
   jc --yaml |\
@@ -13,6 +13,7 @@ cat $1 |\
     | .[] 
     | .key as $var 
     | .value 
-    | { path: (.vault | split("@")[1] + "/" + (split("@")[0] | split("/")[0:-1] | join("/"))), field: (.vault | split("@")[0] | split("/")[-1]) }  
-    | ("| \($var) | \($role) | \(.path) | \(.field) |")
+    | .path as $path
+    | (if has("field") then "-field=\(.field)" elif has("format") then "-format "+.format else "" end) as $option
+    | ("| \($role) | \($var) | \($option) | \(.path) |")
   ' -r
