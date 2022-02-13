@@ -36,20 +36,30 @@ The shell script `vault_secrets.sh` interpretes a yaml file describing vault sec
 ```yaml
 secrets:
   - VAULT_AUTH_ROLE: terraform
+    SSH_PASSPHRASE:
+      path:  gitlab/with_de
+      field: ssh_passphrase
     SSH_PRIVATE_KEY:
-      vault: ssh/ssh_private_key@gitlab
-    TF_VAR_ssh_key_name:
-      vault: ssh/ssh_key_name@gitlab
-    DNS_API_TOKEN:
-      vault: dns/dns_api_token@gitlab
-  - VAULT_AUTH_ROLE: application
-    APPLICATION_REGISTRY_AUTH:
-      vault: applications/registry_auth@gitlab
-    TEST_LONG_PATH:
-      vault: applications/subfolder/test_long_path@gitlab    
+      path:  gitlab/with_de
+      field: ssh_private_key
+    TF_VAR_hcloud_token:
+      path:  gitlab/with_de
+      field: hcloud_token
+  - VAULT_AUTH_ROLE: mailcow
+    MAILCOW_ADMIN_USER:
+      path:  gitlab/mailcow
+      field: mailcow_admin_user
+    MAILCOW_ADMIN_PASSWORD:
+      path:  gitlab/mailcow
+      field: mailcow_admin_password
+    MAILCOW_MAILBOX_PASSWORDS:
+      path:   gitlab/mailcow/mailbox_passwords
+      format: json
 ```
 
-The syntax is closely related to [Use Vault secrets in a CI job](https://docs.gitlab.com/ee/ci/secrets/index.html#use-vault-secrets-in-a-ci-job) in GitLab Premium.
+`path` is mandatory, `field` and `format` are optional.
+
+The syntax is closely related to use the `vault kv get` command and related to [Use Vault secrets in a CI job](https://docs.gitlab.com/ee/ci/secrets/index.html#use-vault-secrets-in-a-ci-job) in GitLab Premium.
 
 There are two usages:
 
