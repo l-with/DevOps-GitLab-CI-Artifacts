@@ -14,6 +14,6 @@ cat $1 |\
     | .key as $var 
     | .value 
     | .path as $path
-    | (if has("field") then "-field=\(.field)" elif has("format") then "-format "+.format else "" end) as $option
+    | (if has("field") then "-field=\(.field) " else "" end + if has("format") then "-format=\(.format) " else "" end) as $option
     | ("| \($role) | \($var) | \($option) | \(.path) |")
   ' -r
