@@ -6,5 +6,5 @@ cat $1 |\
     | .secrets[] 
     | ("vault write -field=token auth/jwt/login role=\(.VAULT_AUTH_ROLE) jwt=$CI_JOB_JWT >.vault && export VAULT_TOKEN=\"$(cat .vault)\" && rm .vault", 
       (to_entries | map(select(.key != "VAULT_AUTH_ROLE")) | .[] | .key as $var | .value 
-        | "vault kv get "+if has("field") then "-field=\(.field) " else "" end + if has("format") then "-format=\(.format) " else "" end + .path +" | tee .vault && echo && export " + $var + "=\"$(cat .vault | sed '"'"'s/$/\\n/'"'"')\" && rm .vault"))
+        | "vault kv get "+if has("field") then "-field=\(.field) " else "" end + if has("format") then "-format=\(.format) " else "" end + .path +" > .vault && echo && export " + $var + "=\"$(cat .vault)\" && rm .vault"))
   ' -r
