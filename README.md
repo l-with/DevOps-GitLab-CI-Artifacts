@@ -84,6 +84,16 @@ It is a good pratice to use [YAML anchors for scripts](https://docs.gitlab.com/e
   - ./vault_secrets.sh secrets.yml >.secrets && . .secrets && rm .secrets
 ```
 
+### Test
+
+The CI snippet also puts the shell script `vault_secrets_test.sh` into artifacts.
+This script tests if all secrets are accessable.
+
+```yaml
+.before-script-vault: &before-script-vault
+  - ./vault_secrets.sh secrets.yml >.secrets && . .secrets && rm .secrets
+```
+
 ### Markdown
 
 The CI snippet also puts the shell script `vault_secrets_md.sh` into artifacts.

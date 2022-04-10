@@ -11,6 +11,9 @@ fileignoreconfig:
 - filename: vault/vault_secrets_md.sh
   checksum: 8994dfb57564b9e0f8bd1ec207d03a0846601dedfd549f3e522d2163e34a6f89
 
+- filename: vault/vault_secrets_test.sh
+  checksum: 098bf41f79e0dd7df966802a3f377cc07bc8a59b9169c233ac19f5de212fb291
+  
 - filename: README.md
   allowed_patterns:
   - >

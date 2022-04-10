@@ -9,8 +9,11 @@ vault_secrets_sh:
     - chmod +x vault_secrets.sh
     - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_secrets_md.sh
     - chmod +x vault_secrets_md.sh
+    - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_secrets_test.sh
+    - chmod +x vault_secrets_test.sh
   artifacts:
     expire_in: 1h
     paths:
       - vault_secrets.sh
       - vault_secrets_md.sh
+      - vault_secrets_test.sh
