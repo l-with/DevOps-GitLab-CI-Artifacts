@@ -1,5 +1,5 @@
-#!/bin/sh
-if [ X"$2" = X"_" ]; then
+#!/bin/bash
+if [ "$2" == "" ]; then
 cat $1 |\
   jc --yaml |\
   jq '
@@ -9,7 +9,7 @@ cat $1 |\
       (to_entries | map(select(.key != "VAULT_AUTH_ROLE")) | .[] | .key as $var | .value 
         | "export " + $var + "=\"$(vault kv get "+if has("field") then "-field=\(.field) " else "" end + if has("format") then "-format=\(.format) " else "" end + .path +")\""))
   ' -r
-elif [ X"$2" = X"_--debug" ] || [ X"$2" = X"-d" ]; then
+elif [ "$2" == "--debug" ] || [ "$2" == "-d" ]; then
 cat $1 |\
   jc --yaml |\
   jq '
@@ -19,7 +19,7 @@ cat $1 |\
       (to_entries | map(select(.key != "VAULT_AUTH_ROLE")) | .[] | .key as $var | .value 
         | "vault kv get "+if has("field") then "-field=\(.field) " else "" end + if has("format") then "-format=\(.format) " else "" end + .path +" > .vault && echo && export " + $var + "=\"$(cat .vault)\" && rm .vault"))
   ' -r
-elif [ X"$2" = X"--test" ] || [ X"$2" = X"-t" ]; then
+elif [ "$2" == "--test" ] || [ "$2" == "-t" ]; then
 cat $1 |\
   jc --yaml |\
   jq '
@@ -30,7 +30,7 @@ cat $1 |\
         | "vault kv get "+if has("field") then "-field=\(.field) " else "" end + if has("format") then "-format=\(.format) " else "" end + .path +" > /dev/null"),
       "unset VAULT_TOKEN")
   ' -r
-elif [ "X$2" = X"_-markdown" ] || [ X"$2" = X"-m" ]; then
+elif [ "$2" == "--markdown" ] || [ "$2" == "-m" ]; then
 echo "| role | variable | option | path |"
 echo "| --- | --- | --- | --- |"
 cat $1 |\
