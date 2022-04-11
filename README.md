@@ -16,9 +16,10 @@ The jobs are assigned to stage `scan`.
 
 ## vault
 
-The CI snippet puts the shell script `vault_secrets.sh` into artifacts.
+The CI snippet puts the shell scripts `vault_secrets.sh` into artifacts.
+The script uses [jq](https://stedolan.github.io/jq/) and [jc](https://github.com/kellyjonbrazil/jc) and outputs commands using [vault](https://www.hashicorp.com/products/vault).
 
-The purpose is to simplify fetching secrets from vault.
+The purpose is to simplify fetching secrets from [vault](https://www.hashicorp.com/products/vault).
 
 If in a job other artifacts are defined, use
 
@@ -61,6 +62,22 @@ secrets:
 
 The syntax is closely related to use the `vault kv get` command and related to [Use Vault secrets in a CI job](https://docs.gitlab.com/ee/ci/secrets/index.html#use-vault-secrets-in-a-ci-job) in GitLab Premium.
 
+The usage is
+
+```bash
+./vault_secrets.sh <secrets> [option]
+```
+
+The script by default outputs the commands to fetch the secrets described in the yaml file `secrets` from vault.
+
+`option` can be
+
+<!-- markdownlint-disable MD033 -->
+- `--debug` / `-d` <br /> output the commands to fetch the secrets from vault, do not use sub shell for vault and thus propagate errors
+- `--test` / `-t` <br /> output the commands to fetch the secrets from vault, only try fetching secrets from vault, do not export the secrets
+- `--markdown` / `-m` <br /> output a markdown table documenting the secrets
+<!-- markdownlint-enable MD033 -->
+
 There are two usages:
 
 ```bash
@@ -86,19 +103,18 @@ It is a good pratice to use [YAML anchors for scripts](https://docs.gitlab.com/e
 
 ### Test
 
+You can test if all secrets are accessable by
+
 The CI snippet also puts the shell script `vault_secrets_test.sh` into artifacts.
 This script tests if all secrets are accessable.
 
-```yaml
-.before-script-vault: &before-script-vault
-  - ./vault_secrets.sh secrets.yml >.secrets && . .secrets && rm .secrets
+```bash
+./vault_secrets.sh secrets.yml --test >.secrets && . .secrets && rm .secrets
 ```
 
 ### Markdown
 
-The CI snippet also puts the shell script `vault_secrets_md.sh` into artifacts.
-This script outputs a Markdown table documenting the secrets.
-This output can pasted into the `README.md` of the project for documentation purpose.
+You can output a Markdown table documenting the secrets by
 
 ```bash
 ./vault_secrets_md.sh secrets.yml
@@ -113,3 +129,5 @@ For the secrets yaml example above the result is
 | DNS_API_TOKEN | terraform | gitlab/dns | dns_api_token |
 | APPLICATION_REGISTRY_AUTH | application | gitlab/applications | registry_auth |
 | TEST_LONG_PATH | application | gitlab/applications/subfolder | test_long_path |
+
+This output can pasted into the `README.md` of the project for documentation purpose.

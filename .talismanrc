@@ -5,19 +5,8 @@ fileignoreconfig:
   - >
     TRIVY_PASSWORD: "\$CI_REGISTRY_PASSWORD"
 
-- filename: vault/vault_secrets.sh
-  checksum: 653f89a23f9d6ba80619e73101062b700c33cce33e48ea552f967bb5955b6d6d
-
-- filename: vault/vault_secrets_md.sh
-  checksum: 8994dfb57564b9e0f8bd1ec207d03a0846601dedfd549f3e522d2163e34a6f89
-
-- filename: vault/vault_secrets_test.sh
-  checksum: 098bf41f79e0dd7df966802a3f377cc07bc8a59b9169c233ac19f5de212fb291
-  
 - filename: README.md
-  allowed_patterns:
-  - >
-    ./vault_secrets.sh secrets.yml >.secrets && . .secrets && rm .secrets
-  - >
-    .*Use Vault secrets in a CI job.*
+  checksum: cb4b0aa9b3301425b87a36bf939c073c09cb403e036ac8fea382b2c1b2942270
 
+- filename: vault/vault_secrets.sh
+  checksum: 176a524f1e951548c24d30859196c4587f8b098c67f1fdff2fa902693e716620
