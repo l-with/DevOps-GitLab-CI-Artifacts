@@ -1,5 +1,6 @@
 vault_secrets_sh:
   stage: vault_secrets_sh
+  needs: []
   variables:
     # No need to clone the repo, we exclusively work on artifacts.  See
     # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
