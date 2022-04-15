@@ -12,4 +12,4 @@ fileignoreconfig:
   checksum: 176a524f1e951548c24d30859196c4587f8b098c67f1fdff2fa902693e716620
 
 - filename: vault/vault_kv_puts.sh
-  checksum: f59df02a9021340b0bfa155c9cc7fe872536a57dfecab4a06168135009306473
+  checksum: 29b1c9b0f7d0661cc7c9914b700d9a611e18ac91a570925e1d39590c504fa9c7

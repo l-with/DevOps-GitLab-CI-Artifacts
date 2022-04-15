@@ -6,8 +6,8 @@ cat $1 |\
     .[] 
     | .kv_puts[] 
     | ("export VAULT_TOKEN=\"$(vault write -field=token auth/jwt/login role=\(.VAULT_AUTH_ROLE) jwt=$CI_JOB_JWT)\"", 
-      (to_entries | map(select(.key != "VAULT_AUTH_ROLE")) | .[] | .key as $var | .value 
-        | "vault kv put "+ if has("format") then "-format=\(.format) " else "" end + .path + " " + .field + "=\"${" + $var + "}"))
+      (to_entries | map(select(.key != "VAULT_AUTH_ROLE")) | .[] | .key as $key | .value.value as $value | .value.path as $path
+        | "vault kv put "+ if has("format") then "-format=\(.format) " else "" end + "\($path) \($key)=\"\($value)\""))
   ' -r
 elif [ "$2" == "--markdown" ] || [ "$2" == "-m" ]; then
 echo "| role | variable | field | option | path |"
