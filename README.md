@@ -4,7 +4,7 @@ GitLab CI templates and snippets
 
 ## trivy
 
-The CI snippet is an adapted `Trivy.gitlab-ci.yml` from section "GitLab CI using Trivy container" on [GitLab CI](https://aquasecurity.github.io/trivy/v0.22.0/advanced/integrations/gitlab-ci/).
+The CI snippet `trivy/Trivy.gitlab-ci.yml` is an adapted `Trivy.gitlab-ci.yml` from section "GitLab CI using Trivy container" on [GitLab CI](https://aquasecurity.github.io/trivy/v0.22.0/advanced/integrations/gitlab-ci/).
 
 The HTML and the JSON templates are copied from [aquasecurity/trivy](https://github.com/aquasecurity/trivy/blob/main/contrib/).
 
@@ -14,9 +14,9 @@ The full image name has to be placed in `$FULL_IMAGE_NAME`.
 
 The jobs are assigned to stage `scan`.
 
-## vault
+## vault secrets
 
-The CI snippet puts the shell scripts `vault_secrets.sh` into artifacts.
+The CI snippet `vault/Vault.gitlab-ci.yml` puts the shell scripts `vault_secrets.sh` into artifacts.
 The script uses [jq](https://stedolan.github.io/jq/) and [jc](https://github.com/kellyjonbrazil/jc) and outputs commands using [vault](https://www.hashicorp.com/products/vault).
 
 The purpose is to simplify fetching secrets from [vault](https://www.hashicorp.com/products/vault).
@@ -117,7 +117,7 @@ This script tests if all secrets are accessable.
 You can output a Markdown table documenting the secrets by
 
 ```bash
-./vault_secrets_md.sh secrets.yml
+./vault_secrets.sh secrets.yml --markdown
 ```
 
 For the secrets yaml example above the result is
@@ -129,5 +129,94 @@ For the secrets yaml example above the result is
 | DNS_API_TOKEN | terraform | gitlab/dns | dns_api_token |
 | APPLICATION_REGISTRY_AUTH | application | gitlab/applications | registry_auth |
 | TEST_LONG_PATH | application | gitlab/applications/subfolder | test_long_path |
+
+This output can pasted into the `README.md` of the project for documentation purpose.
+
+## vault kvs
+
+The CI snippet `vault/Vault.kv_puts.gitlab-ci.yml` puts the shell scripts `vault_kv_puts.sh` into artifacts.
+The script uses [jq](https://stedolan.github.io/jq/) and [jc](https://github.com/kellyjonbrazil/jc) and outputs commands using [vault](https://www.hashicorp.com/products/vault).
+
+The purpose is to simplify putting key value pairs into [vault](https://www.hashicorp.com/products/vault).
+
+If in a job other artifacts are defined, use
+
+```yaml
+  dependencies:
+    - vault_kv_puts_sh
+```
+
+to ensure fetching `vault_kv_puts.sh` from artifacts.
+
+The job is assigned to stage `vault_kv_puts_sh`.
+
+The shell script `vault_kv_puts.sh` interpretes a yaml file describing vault key value pairs, for instance:
+
+```yaml
+kv_puts:
+  - VAULT_AUTH_ROLE: mailcow
+    TLSA_dns_record_value:
+      path:  gitlab/mailcow/kv
+      value: TLSA_DNS_RECORD_VALUE
+    DKIM_dns_record_value:
+      path:  gitlab/mailcow/kv
+      value: DKIM_DNS_RECORD_VALUE
+```
+
+`path` and `value` are mandatory, `format` is optional.
+
+The syntax is closely related to use the `vault kv put` command.
+
+The usage is
+
+```bash
+./vault_kv_puts_sh <kv_puts> [option]
+```
+
+The script by default outputs the commands to put the key value pairs described in the yaml file `kv_puts` into vault.
+
+`option` can be
+
+<!-- markdownlint-disable MD033 -->
+- `--markdown` / `-m` <br /> output a markdown table documenting the key value pairs
+<!-- markdownlint-enable MD033 -->
+
+There are two usages:
+
+```bash
+./vault_kv_puts.sh kv_puts.yml
+```
+
+shows the commands produced by `vault_kv_puts.sh`.
+
+```bash
+./vault_kv_puts.sh kv_puts.yml >.kv_puts && . .kv_puts && rm .kv_puts
+```
+
+executes the commands produced by `vault_kv_puts.sh` in the execution context.
+
+You have to set `VAULT_ADDR` and possibly `VAULT_CACERT` for using `vault_secrets.sh`.
+
+It is a good pratice to use [YAML anchors for scripts](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#yaml-anchors-for-scripts) by defining in the CI definition
+
+```yaml
+.after-script-vault: &after-script-vault
+  - ./vault_kv_puts.sh kv_puts.yml >.kv_puts && . .kv_puts && rm .kv_puts
+```
+
+### markdown
+
+You can output a Markdown table documenting the secrets by
+
+```bash
+./vault_kv_puts.sh kv_puts.yml --markdown
+```
+
+For the secrets yaml example above the result is
+
+| role | path| key | value | option |
+| --- | --- | --- | --- | --- |
+| mailcow | gitlab/mailcow/kv | TLSA_dns_record_value | TLSA_DNS_RECORD_VALUE |  |
+| mailcow | gitlab/mailcow/kv | DKIM_dns_record_value | DKIM_DNS_RECORD_VALUE |  |
 
 This output can pasted into the `README.md` of the project for documentation purpose.

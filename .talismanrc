@@ -6,7 +6,7 @@ fileignoreconfig:
     TRIVY_PASSWORD: "\$CI_REGISTRY_PASSWORD"
 
 - filename: README.md
-  checksum: cb4b0aa9b3301425b87a36bf939c073c09cb403e036ac8fea382b2c1b2942270
+  checksum: e1f291bb409aed19e47d5e48f10cbad4e508f5fc66e640b406d4bf4ef919e973
 
 - filename: vault/vault_secrets.sh
   checksum: 176a524f1e951548c24d30859196c4587f8b098c67f1fdff2fa902693e716620
