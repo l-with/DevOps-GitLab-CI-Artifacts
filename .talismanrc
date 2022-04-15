@@ -10,3 +10,6 @@ fileignoreconfig:
 
 - filename: vault/vault_secrets.sh
   checksum: 176a524f1e951548c24d30859196c4587f8b098c67f1fdff2fa902693e716620
+
+- filename: vault/vault_kv_puts.sh
+  checksum: f59df02a9021340b0bfa155c9cc7fe872536a57dfecab4a06168135009306473
