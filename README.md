@@ -132,7 +132,7 @@ For the secrets yaml example above the result is
 
 This output can pasted into the `README.md` of the project for documentation purpose.
 
-## vault kvs
+## vault kv puts
 
 The CI snippet `vault/Vault.kv_puts.gitlab-ci.yml` puts the shell scripts `vault_kv_puts.sh` into artifacts.
 The script uses [jq](https://stedolan.github.io/jq/) and [jc](https://github.com/kellyjonbrazil/jc) and outputs commands using [vault](https://www.hashicorp.com/products/vault).
