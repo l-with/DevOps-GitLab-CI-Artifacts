@@ -10,7 +10,7 @@ cat $1 |\
         | "vault kv put "+ if has("format") then "-format=\(.format) " else "" end + "\($path) \($key)=\"\($value)\""))
   ' -r
 elif [ "$2" == "--markdown" ] || [ "$2" == "-m" ]; then
-echo "| role | variable | field | option | path |"
+echo "| role | path| key | value | option |"
 echo "| --- | --- | --- | --- | --- |"
 cat $1 |\
   jc --yaml |\
@@ -22,11 +22,10 @@ cat $1 |\
     | to_entries 
     | map(select(.key != "VAULT_AUTH_ROLE")) 
     | .[] 
-    | .key as $var 
-    | .value 
-    | .path as $path
-    | .field as $field
+    | .key as $key 
+    | .value.value as $value 
+    | .value.path as $path
     | (if has("format") then "-format=\(.format) " else "" end) as $option
-    | ("| \($role) | \($var) | \($field) | \($option) | \(.path) |")
+    | ("| \($role) | \($path) | \($key) | \($value) | \($option) | ")
   ' -r
 fi
