@@ -10,3 +10,5 @@
 .secrets
 *kv_puts.yml
 .kv_puts
+.kv
+.json
