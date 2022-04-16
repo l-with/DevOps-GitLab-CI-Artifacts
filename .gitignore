@@ -6,5 +6,7 @@
 /trivy/gl-container-scanning-report.*
 
 # other
-.vault
 *secrets.yml
+.secrets
+*kv_puts.yml
+.kv_puts
