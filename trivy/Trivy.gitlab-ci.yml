@@ -4,7 +4,7 @@ variables:
   TRIVY_AUTH_URL: "$CI_REGISTRY"
   TRIVY_CACHE: .trivycache
 
-scan:
+trivy_scan:
   variables:
     # No need to clone the repo, we exclusively work on artifacts.  See
     # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
@@ -36,7 +36,6 @@ scan:
       - .trivy-reports/
     reports:
       junit: .trivy-reports/*.xml
-
 
 check:
   variables:
