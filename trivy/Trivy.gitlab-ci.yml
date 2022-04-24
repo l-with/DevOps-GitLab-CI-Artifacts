@@ -4,24 +4,7 @@ variables:
   TRIVY_AUTH_URL: "$CI_REGISTRY"
   TRIVY_CACHE: .trivycache
 
-prepare_scanning:
-  variables:
-    # No need to clone the repo, we exclusively work on artifacts.  See
-    # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
-    GIT_STRATEGY: none
-  image:
-    name: lwith/gitlab-devops:1.1.12
-  stage: scan
-  script:
-    # download templates
-    - time curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/html.tpl
-    - time curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/gitlab.tpl
-  cache:
-    paths:
-      - html.tpl
-      - gitlab.tpl
-
-container_scanning:
+scan:
   variables:
     # No need to clone the repo, we exclusively work on artifacts.  See
     # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
@@ -30,8 +13,6 @@ container_scanning:
     name: bitnami/trivy:latest
     entrypoint: [""]
   stage: scan
-  needs:
-    - prepare_scanning  
   script:
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
@@ -40,8 +21,9 @@ container_scanning:
     - time trivy image --download-db-only --no-progress
     # Build reports
     - time mkdir .trivy-reports
-    - time trivy image --exit-code 0 --no-progress --format template --template "@html.tpl" --output .trivy-reports/gl-container-scanning-report.html "$FULL_IMAGE_NAME"
-    - time trivy image --exit-code 0 --no-progress --format template --template "@gitlab.tpl" --output .trivy-reports/gl-container-scanning-report.json "$FULL_IMAGE_NAME"
+    - time trivy image --exit-code 0 --no-progress --format template --template "@contrib/html.tpl" --output .trivy-reports/gl-container-scanning-report.html "$FULL_IMAGE_NAME"
+    - time trivy image --exit-code 0 --no-progress --format template --template "@contrib/gitlab.tpl" --output .trivy-reports/gl-container-scanning-report.json "$FULL_IMAGE_NAME"
+    - time trivy image --exit-code 0 --no-progress --format template --template "@contrib/junit.tpl" --output .trivy-reports/gl-container-scanning-report.json "$FULL_IMAGE_NAME"
     # Prints full report
     - time trivy image --exit-code 0 --no-progress "$FULL_IMAGE_NAME"
   cache:
@@ -52,8 +34,11 @@ container_scanning:
     expire_in: 1h
     paths:
       - .trivy-reports/
+    reports:
+      junit: .trivy-reports/*.xml
 
-container_checking:
+
+check:
   variables:
     # No need to clone the repo, we exclusively work on artifacts.  See
     # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
@@ -62,8 +47,6 @@ container_checking:
     name: bitnami/trivy:latest
     entrypoint: [""]
   stage: scan
-  needs:
-    - prepare_scanning  
   script:
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
