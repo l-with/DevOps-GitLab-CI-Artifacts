@@ -44,7 +44,7 @@ trivy_scan:
     - time mkdir .trivy-reports
     - time trivy image --exit-code 0 --no-progress --format template --template "@html.tpl" --output .trivy-reports/gl-container-scanning-report.html "$FULL_IMAGE_NAME"
     - time trivy image --exit-code 0 --no-progress --format template --template "@gitlab.tpl" --output .trivy-reports/gl-container-scanning-report.json "$FULL_IMAGE_NAME"
-    - time trivy image --exit-code 0 --no-progress --format template --template "@junit.tpl" --output .trivy-reports/gl-container-scanning-report.json "$FULL_IMAGE_NAME"
+    - time trivy image --exit-code 0 --no-progress --format template --template "@junit.tpl" --output .trivy-reports/gl-container-scanning-report.xml "$FULL_IMAGE_NAME"
     # Prints full report
     - time trivy image --exit-code 0 --no-progress "$FULL_IMAGE_NAME"
   cache:
