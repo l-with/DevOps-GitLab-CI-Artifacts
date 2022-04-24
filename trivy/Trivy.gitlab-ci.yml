@@ -54,9 +54,10 @@ trivy_scan:
   artifacts:
     expire_in: 1h
     paths:
-      - .trivy-reports/
+      - .trivy-reports/gl-container-scanning-report.html
+      - .trivy-reports/gl-container-scanning-report.json
     reports:
-      junit: .trivy-reports/*.xml
+      junit: .trivy-reports/gl-container-scanning-report.xml
 
 check:
   variables:
