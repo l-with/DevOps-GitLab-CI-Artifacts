@@ -35,6 +35,7 @@ trivy_scan:
   needs: 
     - trivy_prepare_scan
   script:
+    - echo scan image $FULL_IMAGE_NAME
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
     - time trivy image --clear-cache
@@ -69,6 +70,7 @@ check:
     entrypoint: [""]
   stage: scan
   script:
+    - echo check image $FULL_IMAGE_NAME
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
     - time trivy image --clear-cache
