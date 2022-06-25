@@ -31,9 +31,9 @@ cat $1 |\
       "unset VAULT_TOKEN")
   ' -r
 elif [ "$2" == "--markdown" ] || [ "$2" == "-m" ]; then
-echo "| role | variable | option | path |"
-echo "| --- | --- | --- | --- |"
-cat $1 |\
+  echo "| role | variable | option | path |"
+  echo "| --- | --- | --- | --- |"
+  cat $1 |\
   jc --yaml |\
   jq '
     .[] 
