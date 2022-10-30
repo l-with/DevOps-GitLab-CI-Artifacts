@@ -1,10 +1,11 @@
 #!/bin/bash
 TF_FOLDER=$(mktemp -d)
-# echo $TF_FOLDER
+echo $TF_FOLDER
 
 for TF_FILE_PATH in $1/*.tf
 do
     TF_FILE=$(basename $TF_FILE_PATH)
+    echo hcl2tojson $TF_FILE_PATH $TF_FOLDER/$TF_FILE.json
     hcl2tojson $TF_FILE_PATH $TF_FOLDER/$TF_FILE.json
 done
 
