@@ -5,12 +5,12 @@ echo $TF_FOLDER
 for TF_FILE_PATH in $1/*.tf
 do
     TF_FILE=$(basename $TF_FILE_PATH)
+    echo hcl2tojson $TF_FILE_PATH $TF_FOLDER/$TF_FILE.json
     hcl2tojson $TF_FILE_PATH $TF_FOLDER/$TF_FILE.json
 done
 
-cat $TF_FOLDER/*.json | jq -s -c
+# cat $TF_FOLDER/*.json | jq -s -c
 
-# hcl2tojson $1 $TF_FOLDER
 echo "| variable | type | sensitive | description | default |"
 echo "| --- | --- | --- | --- | --- |"
 cat $TF_FOLDER/*.json |\
@@ -23,3 +23,16 @@ cat $TF_FOLDER/*.json |\
     | (.value.description[0] | .+"" | sub("\\n";"<br />";"g")) as $description 
     | (.value.default[0] | if(. == null) then .+"" else . end) as $default 
     | ("| \($var) | \($type) | \($sensitive) | \($description) | \($default) |")'
+
+echo
+echo "| output | type | sensitive | description |"
+echo "| --- | --- | --- | --- | --- |"
+cat $TF_FOLDER/*.json |\
+  jq -r -s -c '
+    [[.[] | .output | arrays ] | flatten | .[] | to_entries | .[]] 
+    | .[] 
+    | .key as $output
+    | (.value.type[0] | ltrimstr("${") | rtrimstr("}")) as $type 
+    | (.value.sensitive[0] | if(. == null) then false else . end) as $sensitive
+    | (.value.description[0] | .+"" | sub("\\n";"<br />";"g")) as $description
+    | ("| \($output) | \($type) | \($sensitive) | \($description) |")'
