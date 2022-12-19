@@ -10,7 +10,7 @@ trivy_prepare_scan:
     # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
     GIT_STRATEGY: none
   image:
-    name: lwith/gitlab-devops:1.1.12
+    name: lwith/gitlab-devops:latest
   stage: scan
   script:
     # download templates
