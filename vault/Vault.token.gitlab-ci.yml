@@ -1,5 +1,5 @@
-vault_kv_puts_sh:
-  stage: vault_kv_puts_sh
+vault_token_sh:
+  stage: vault_token_sh
   needs: []
   variables:
     # No need to clone the repo, we exclusively work on artifacts.  See
