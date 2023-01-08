@@ -16,7 +16,7 @@ The jobs are assigned to stage `scan`.
 
 ## vault
 
-The CI snippet `vault/Vault.all.gitlab-ci.yml` combines all vault CI snippets:
+The CI snippet `vault/Vault.tools.gitlab-ci.yml` combines all vault CI snippets:
 
 * [vault secrets](#vault-secrets)
 * [vault token](#vault-token)
@@ -25,13 +25,13 @@ The CI snippet `vault/Vault.all.gitlab-ci.yml` combines all vault CI snippets:
 and puts all shell scripts into artifacts.
 Some scripts use [jq](https://stedolan.github.io/jq/) and [jc](https://github.com/kellyjonbrazil/jc) and outputs commands using [vault](https://www.hashicorp.com/products/vault).
 
-The job is assigned to stage `vault_sh`.
+The job is assigned to stage `vault_tools_sh`.
 
 If in a job other artifacts are defined, use
 
 ```yaml
   dependencies:
-    - vault_sh
+    - vault_tools_sh
 ```
 
 ## vault secrets

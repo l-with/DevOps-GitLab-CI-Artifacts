@@ -1,5 +1,5 @@
-vault_sh:
-  stage: vault_sh
+vault_tools_sh:
+  stage: vault_tools_sh
   needs: []
   variables:
     # No need to clone the repo, we exclusively work on artifacts.  See
