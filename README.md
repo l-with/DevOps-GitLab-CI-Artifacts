@@ -14,12 +14,34 @@ The full image name has to be placed in `$FULL_IMAGE_NAME`.
 
 The jobs are assigned to stage `scan`.
 
+## vault
+
+The CI snippet `vault/Vault.all.gitlab-ci.yml` combines all vault CI snippets:
+
+* [vault secrets](#vault-secrets)
+* [vault token](#vault-token)
+* [vault kv puts](#vault-kv-puts)
+
+and puts all shell scripts into artifacts.
+Some scripts use [jq](https://stedolan.github.io/jq/) and [jc](https://github.com/kellyjonbrazil/jc) and outputs commands using [vault](https://www.hashicorp.com/products/vault).
+
+The job is assigned to stage `vault_sh`.
+
+If in a job other artifacts are defined, use
+
+```yaml
+  dependencies:
+    - vault_sh
+```
+
 ## vault secrets
 
-The CI snippet `vault/Vault.gitlab-ci.yml` puts the shell scripts `vault_secrets.sh` into artifacts.
+The CI snippet `vault/Vault.secrets.gitlab-ci.yml` (`vault/Vault.gitlab-ci.yml` is deprecated) puts the shell scripts `vault_secrets.sh` into artifacts.
 The script uses [jq](https://stedolan.github.io/jq/) and [jc](https://github.com/kellyjonbrazil/jc) and outputs commands using [vault](https://www.hashicorp.com/products/vault).
 
 The purpose is to simplify fetching secrets from [vault](https://www.hashicorp.com/products/vault).
+
+The job is assigned to stage `vault_secrets_sh`.
 
 If in a job other artifacts are defined, use
 
@@ -29,8 +51,6 @@ If in a job other artifacts are defined, use
 ```
 
 to ensure fetching `vault_secrets.sh` from artifacts.
-
-The job is assigned to stage `vault_secrets_sh`.
 
 The shell script `vault_secrets.sh` interpretes a yaml file describing vault secrets, for instance:
 
@@ -132,12 +152,47 @@ For the secrets yaml example above the result is
 
 This output can pasted into the `README.md` of the project for documentation purpose.
 
+## vault token
+
+The CI snippet `vault/Vault.token.gitlab-ci.yml` puts the shell scripts `vault_token.sh` into artifacts.
+The script use [vault](https://www.hashicorp.com/products/vault) to fetch a vault token and exports the token.
+
+The purpose is to simplify fetching a vault to token.
+
+The job is assigned to stage `vault_token_sh`.
+
+If in a job other artifacts are defined, use
+
+```yaml
+  dependencies:
+    - vault_token_sh
+```
+
+to ensure fetching `vault_token.sh` from artifacts.
+
+The usage is
+
+```bash
+./vault_token.sh <vault-auth-role> [option]
+```
+
+The shell script `vault_token.sh` fetches a vault token for the role and exports the token in the environment variable `VAULT_TOKEN`.
+
+It is a good pratice to use [YAML anchors for scripts](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#yaml-anchors-for-scripts) by defining in the CI definition
+
+```yaml
+.before-script-vault: &before-script-vault
+  - ./vault_token.sh terraform
+```
+
 ## vault kv puts
 
 The CI snippet `vault/Vault.kv_puts.gitlab-ci.yml` puts the shell scripts `vault_kv_puts.sh` into artifacts.
 The script uses [jq](https://stedolan.github.io/jq/) and [jc](https://github.com/kellyjonbrazil/jc) and outputs commands using [vault](https://www.hashicorp.com/products/vault).
 
 The purpose is to simplify putting key value pairs into [vault](https://www.hashicorp.com/products/vault).
+
+The job is assigned to stage `vault_kv_puts_sh`.
 
 If in a job other artifacts are defined, use
 
@@ -147,8 +202,6 @@ If in a job other artifacts are defined, use
 ```
 
 to ensure fetching `vault_kv_puts.sh` from artifacts.
-
-The job is assigned to stage `vault_kv_puts_sh`.
 
 The shell script `vault_kv_puts.sh` interpretes a yaml file describing vault key value pairs, for instance:
 
@@ -177,7 +230,7 @@ The syntax is closely related to use the `vault kv put` command.
 The usage is
 
 ```bash
-./vault_kv_puts_sh <kv_puts> [option]
+./vault_kv_puts.sh <vault-auth-role>
 ```
 
 The script by default outputs the commands to put the key value pairs described in the yaml file `kv_puts` into vault.
@@ -202,7 +255,7 @@ shows the commands produced by `vault_kv_puts.sh`.
 
 executes the commands produced by `vault_kv_puts.sh` in the execution context.
 
-You have to set `VAULT_ADDR` and possibly `VAULT_CACERT` for using `vault_secrets.sh`.
+You have to set `VAULT_ADDR` and possibly `VAULT_CACERT` for using `vault_kv_puts.sh`.
 
 It is a good pratice to use [YAML anchors for scripts](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#yaml-anchors-for-scripts) by defining in the CI definition
 

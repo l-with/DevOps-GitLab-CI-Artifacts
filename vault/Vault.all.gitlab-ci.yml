@@ -1,0 +1,20 @@
+vault_sh:
+  stage: vault_sh
+  needs: []
+  variables:
+    # No need to clone the repo, we exclusively work on artifacts.  See
+    # https://docs.gitlab.com/ee/ci/runners/README.html#git-strategy
+    GIT_STRATEGY: none
+  script:
+    - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_secrets.sh
+    - chmod +x vault_secrets.sh
+    - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_kv_puts.sh
+    - chmod +x vault_kv_puts.sh
+    - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_token.sh
+    - chmod +x vault_token.sh
+  artifacts:
+    expire_in: 1h
+    paths:
+      - vault_secrets.sh
+      - vault_kv_puts.sh
+      - vault_token.sh
