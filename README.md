@@ -93,9 +93,9 @@ The script by default outputs the commands to fetch the secrets described in the
 `option` can be
 
 <!-- markdownlint-disable MD033 -->
-- `--debug` / `-d` <br /> output the commands to fetch the secrets from vault, do not use sub shell for vault and thus propagate errors
-- `--test` / `-t` <br /> output the commands to fetch the secrets from vault, only try fetching secrets from vault, do not export the secrets
-- `--markdown` / `-m` <br /> output a markdown table documenting the secrets
+* `--debug` / `-d` <br /> output the commands to fetch the secrets from vault, do not use sub shell for vault and thus propagate errors
+* `--test` / `-t` <br /> output the commands to fetch the secrets from vault, only try fetching secrets from vault, do not export the secrets
+* `--markdown` / `-m` <br /> output a markdown table documenting the secrets
 <!-- markdownlint-enable MD033 -->
 
 There are two usages:
@@ -238,7 +238,7 @@ The script by default outputs the commands to put the key value pairs described 
 `option` can be
 
 <!-- markdownlint-disable MD033 -->
-- `--markdown` / `-m` <br /> output a markdown table documenting the key value pairs
+* `--markdown` / `-m` <br /> output a markdown table documenting the key value pairs
 <!-- markdownlint-enable MD033 -->
 
 There are two usages:
