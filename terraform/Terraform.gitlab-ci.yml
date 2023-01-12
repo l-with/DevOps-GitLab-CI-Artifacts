@@ -1,0 +1,103 @@
+include:
+  - template: Terraform.latest.gitlab-ci.yml
+  - project: 'packages-and-registries/gitlab-ci.yml'
+    file:    '/vault/Vault.tools.gitlab-ci.yml'
+
+stages:
+  - vault_tools_sh
+  - init
+  - validate
+  - build
+  - test
+  - deploy
+  - cleanup
+
+image:
+  name: lwith/gitlab-devops:latest
+
+variables:
+  ENVIRONMENT:       $CI_COMMIT_BRANCH
+  TF_STATE_NAME:     $ENVIRONMENT
+  TF_ROOT:           ${CI_PROJECT_DIR}
+  TF_VAR_api_v4_url: $CI_API_V4_URL
+  TF_VAR_project_id: $CI_PROJECT_ID
+
+workflow:
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    when: never
+  - if: $CI_COMMIT_REF_PROTECTED != "true"
+    variables:
+      ENVIRONMENT:  feature
+      AUTO_STOP_IN: "15 minutes"
+  - when: always
+    variables:
+      AUTO_STOP_IN: "never"
+
+.before-script-secrets-vars: &before-script-secrets-vars
+    - cd $TF_ROOT
+    - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/secrets_${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
+    - >
+      if [ -f "${CI_PROJECT_DIR}/environment/default.env" ]; then
+        set -a && source ${CI_PROJECT_DIR}/environment/default.env && set +a
+      fi
+    - >
+      if [ -f "${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env" ]; then
+        set -a && source ${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env && set +a
+      fi
+
+.fmt:
+  extends: .terraform:fmt
+  rules:
+    - when: always
+
+.validate:
+  extends: .terraform:validate
+  rules:
+    - when: always
+
+.build:
+  extends: .terraform:build
+  needs:
+    - vault_tools_sh
+    - validate
+  dependencies:
+    - vault_tools_sh
+  before_script:
+    - *before-script-secrets-vars
+  rules:
+    - when: on_success
+
+.deploy:
+  extends: .terraform:deploy
+  needs:
+    - vault_tools_sh
+    - build
+  dependencies:
+    - vault_tools_sh
+    - build
+  environment:
+    name:         $ENVIRONMENT
+    auto_stop_in: $AUTO_STOP_IN
+    on_stop:      destroy
+  before_script:
+    - *before-script-secrets-vars
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      when: on_success
+
+.destroy:
+  extends: .terraform:destroy
+  needs:
+    - vault_tools_sh
+    - validate
+  dependencies:
+    - vault_tools_sh
+  environment:
+    name:   $ENVIRONMENT
+    action: stop
+  before_script:
+    - *before-script-secrets-vars
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      when: manual
