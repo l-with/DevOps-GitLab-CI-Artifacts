@@ -2,6 +2,14 @@
 
 GitLab CI templates and snippets
 
+## terraform
+
+The CI template `terraform/Terraform.gitlab-ci.yml` is based on the [GitLab terraform CI template](https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.latest.gitlab-ci.yml).
+
+The template modifies the [GitLab terraform CI template](https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.latest.gitlab-ci.yml) so that the [GitLab flow](https://docs.gitlab.com/ee/topics/gitlab_flow.html#introduction-to-gitlab-flow) can be used (s. example project [GitLab Terraform GitLab Flow](https://gitlab.with.de/try/gitlab-terraform-gitlab-flow)).
+
+The template is based on `terraform/Terraform.base.gitlab-ci.yml`.
+
 ## trivy
 
 The CI snippet `trivy/Trivy.gitlab-ci.yml` is an adapted `Trivy.gitlab-ci.yml` from section "GitLab CI using Trivy container" on [GitLab CI](https://aquasecurity.github.io/trivy/v0.22.0/advanced/integrations/gitlab-ci/).
