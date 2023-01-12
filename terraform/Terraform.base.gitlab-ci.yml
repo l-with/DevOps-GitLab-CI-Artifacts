@@ -1,6 +1,8 @@
 include:
+  - template: Terraform/Base.latest.gitlab-ci.yml  # https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/ci/templates/Terraform/Base.latest.gitlab-ci.yml
+  - template: Jobs/SAST-IaC.latest.gitlab-ci.yml   # https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/ci/templates/Jobs/SAST-IaC.latest.gitlab-ci.yml
   - project: 'packages-and-registries/gitlab-ci.yml'
-    file:    '/terraform/Terraform.base.gitlab-ci.yml'
+    file:    '/vault/Vault.tools.gitlab-ci.yml'
 
 stages:
   - vault_tools_sh
@@ -45,17 +47,17 @@ workflow:
         set -a && source ${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env && set +a
       fi
 
-fmt:
-  extends: .fmt
+.fmt:
+  extends: .terraform:fmt
   rules:
     - when: always
 
-validate:
-  extends: .validate
+.validate:
+  extends: .terraform:validate
   rules:
     - when: always
 
-build:
+.build:
   extends: .terraform:build
   needs:
     - vault_tools_sh
@@ -67,8 +69,8 @@ build:
   rules:
     - when: on_success
 
-deploy:
-  extends: .deploy
+.deploy:
+  extends: .terraform:deploy
   needs:
     - vault_tools_sh
     - build
@@ -85,8 +87,8 @@ deploy:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
       when: on_success
 
-destroy:
-  extends: .destroy
+.destroy:
+  extends: .terraform:destroy
   needs:
     - vault_tools_sh
     - validate
