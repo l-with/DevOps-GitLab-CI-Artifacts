@@ -33,6 +33,12 @@ workflow:
     variables:
       AUTO_STOP_IN: "never"
 
+cache:
+  - key: ${CI_PROJECT_NAME}__${CI_COMMIT_BRANCH}
+    paths:
+      - $TF_ROOT/.terraform/
+      - $TF_ROOT/.terraform.lock.hcl
+
 .before-script-secrets-vars: &before-script-secrets-vars
     - cd $TF_ROOT
     - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
