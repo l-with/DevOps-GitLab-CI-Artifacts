@@ -76,17 +76,20 @@ secrets:
       field: hcloud_token
   - VAULT_AUTH_ROLE: mailcow
     MAILCOW_ADMIN_USER:
-      path:  gitlab/mailcow
+      mount: gitlab
+      path:  mailcow
       field: mailcow_admin_user
     MAILCOW_ADMIN_PASSWORD:
-      path:  gitlab/mailcow
+      mount: gitlab
+      path:  mailcow
       field: mailcow_admin_password
     MAILCOW_MAILBOX_PASSWORDS:
-      path:   gitlab/mailcow/mailbox_passwords
+      mount:  gitlab
+      path:   mailcow/mailbox_passwords
       format: json
 ```
 
-`path` is mandatory, `field` and `format` are optional.
+`path` is mandatory, `mount`, `field` and `format` are optional.
 
 The syntax is closely related to use the `vault kv get` command and related to [Use Vault secrets in a CI job](https://docs.gitlab.com/ee/ci/secrets/index.html#use-vault-secrets-in-a-ci-job) in GitLab Premium.
 
