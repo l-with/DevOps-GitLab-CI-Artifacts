@@ -10,6 +10,8 @@ vault_tools_sh:
     - chmod +x vault_secrets.sh
     - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_kv_puts.sh
     - chmod +x vault_kv_puts.sh
+    - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_kv2_patches.sh
+    - chmod +x vault_kv2_patches.sh
     - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_token.sh
     - chmod +x vault_token.sh
   artifacts:
@@ -17,4 +19,5 @@ vault_tools_sh:
     paths:
       - vault_secrets.sh
       - vault_kv_puts.sh
+      - vault_kv2_patches.sh
       - vault_token.sh

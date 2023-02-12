@@ -29,6 +29,7 @@ The CI snippet `vault/Vault.tools.gitlab-ci.yml` combines all vault CI snippets:
 * [vault secrets](#vault-secrets)
 * [vault token](#vault-token)
 * [vault kv puts](#vault-kv-puts)
+* [vault kv2 patches](#vault-kv2-patches)
 
 and puts all shell scripts into artifacts.
 Some scripts use [jq](https://stedolan.github.io/jq/) and [jc](https://github.com/kellyjonbrazil/jc) and outputs commands using [vault](https://www.hashicorp.com/products/vault).
@@ -143,7 +144,7 @@ This script tests if all secrets are accessable.
 ./vault_secrets.sh secrets.yml --test >.secrets && . .secrets && rm .secrets
 ```
 
-### Markdown
+### Markdown for vault_secrets
 
 You can output a Markdown table documenting the secrets by
 
@@ -234,10 +235,6 @@ kv_puts:
       KEY2:   key2
 ```
 
-`path` and `value` are mandatory, `format` is optional.
-
-The syntax is closely related to use the `vault kv put` command.
-
 The usage is
 
 ```bash
@@ -275,7 +272,7 @@ It is a good pratice to use [YAML anchors for scripts](https://docs.gitlab.com/e
   - ./vault_kv_puts.sh kv_puts.yml >.kv_puts && . .kv_puts && rm .kv_puts
 ```
 
-### markdown
+### Markdown for vault_kv_puts
 
 You can output a Markdown table documenting the secrets by
 
@@ -283,7 +280,109 @@ You can output a Markdown table documenting the secrets by
 ./vault_kv_puts.sh kv_puts.yml --markdown
 ```
 
-For the secrets yaml example above the result is
+For the kv puts yaml example above the result is
+
+| role | path| key | value |
+| --- | --- | --- | --- |
+| mailcow | gitlab/mailcow/kv | TLSA_dns_record_value | TLSA_DNS_RECORD_VALUE |
+| mailcow | gitlab/mailcow/kv | DKIM_dns_record_value | DKIM_DNS_RECORD_VALUE |
+| mailcow | gitlab/mailcow/kv2 | TLSA_dns_record_value2 | TLSA_DNS_RECORD_VALUE2 |
+| mailcow | gitlab/mailcow/kv2 | DKIM_dns_record_value2 | DKIM_DNS_RECORD_VALUE2 |
+| terraform | gitlab/mailcow/kv | TLSA_dns_record_value | TLSA_DNS_RECORD_VALUE |
+| terraform | gitlab/mailcow/kv | DKIM_dns_record_value | DKIM_DNS_RECORD_VALUE |
+| terraform | gitlab/mailcow/kv2 | TLSA_dns_record_value2 | TLSA_DNS_RECORD_VALUE2 |
+| terraform | gitlab/mailcow/kv2 | DKIM_dns_record_value2 | DKIM_DNS_RECORD_VALUE2 |
+
+This output can pasted into the `README.md` of the project for documentation purpose.
+
+## vault kv2 patches
+
+The CI snippet `vault/Vault.kv2_patches.gitlab-ci.yml` puts the shell scripts `vault_kv2_patches.sh` into artifacts.
+The script uses [jq](https://stedolan.github.io/jq/) and [jc](https://github.com/kellyjonbrazil/jc) and outputs commands using [vault](https://www.hashicorp.com/products/vault).
+
+The purpose is to simplify putting key value pairs into [vault](https://www.hashicorp.com/products/vault).
+
+The job is assigned to stage `vault_kv2_patches_sh`.
+
+If in a job other artifacts are defined, use
+
+```yaml
+  dependencies:
+    - vault_kv2_patches_sh
+```
+
+to ensure fetching `vault_kv2_patches.sh` from artifacts.
+
+The shell script `vault_kv2_patches.sh` interpretes a yaml file describing vault key value pairs, for instance:
+
+```yaml
+kv2_patches:
+  - VAULT_AUTH_ROLE: mailcow
+    TLSA_DNS_RECORD_VALUE:
+      mount: gitlab
+      path:  mailcow/kv
+      field: TLSA_dns_record_value
+    DKIM_DNS_RECORD_VALUE: 
+      mount: gitlab
+      path:  mailcow/kv
+      field: DKIM_dns_record_value
+  - VAULT_AUTH_ROLE: terraform
+    TOKEN: 
+      path:  gitlab/terraform/kv
+      field: token
+    KEY:
+      path:  gitlab/terraform/kv
+      field: key
+```
+
+`path` and `field` are mandatory, `mount` is optional.
+
+The usage is
+
+```bash
+./vault_kv2_patches.sh <vault-auth-role>
+```
+
+The script by default outputs the commands to put the key value pairs described in the yaml file `kv2_patches` into vault.
+
+`option` can be
+
+<!-- markdownlint-disable MD033 -->
+* `--markdown` / `-m` <br /> output a markdown table documenting the key value pairs
+<!-- markdownlint-enable MD033 -->
+
+There are two usages:
+
+```bash
+./vault_kv2_patches.sh kv2_patches.yml
+```
+
+shows the commands produced by `vault_kv2_patches.sh`.
+
+```bash
+./vault_kv2_patches.sh kv2_patches.yml >.kv2_patches && . .kv2_patches && rm .kv2_patches
+```
+
+executes the commands produced by `vault_kv2_patches.sh` in the execution context.
+
+You have to set `VAULT_ADDR` and possibly `VAULT_CACERT` for using `vault_kv2_patches.sh`.
+
+It is a good pratice to use [YAML anchors for scripts](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#yaml-anchors-for-scripts) by defining in the CI definition
+
+```yaml
+.after-script-vault: &after-script-vault
+  - ./vault_kv2_patches.sh kv2_patches.yml >.kv2_patches && . .kv2_patches && rm .kv2_patches
+```
+
+### markdown
+
+You can output a Markdown table documenting the secrets by
+
+```bash
+./vault_kv2_patches.sh kv2_patches.yml --markdown
+```
+
+For the kv2 patches yaml example above the result is
 
 | role | path| key | value |
 | --- | --- | --- | --- |

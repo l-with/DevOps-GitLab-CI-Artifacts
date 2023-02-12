@@ -1,0 +1,17 @@
+kv2_patches:
+  - VAULT_AUTH_ROLE: mailcow
+    TLSA_DNS_RECORD_VALUE:
+      mount: gitlab
+      path:  mailcow/kv
+      field: TLSA_dns_record_value
+    DKIM_DNS_RECORD_VALUE: 
+      mount: gitlab
+      path:  mailcow/kv
+      field: DKIM_dns_record_value
+  - VAULT_AUTH_ROLE: terraform
+    TOKEN: 
+      path:  gitlab/terraform/kv
+      field: token
+    KEY:
+      path:  gitlab/terraform/kv
+      field: key
