@@ -4,20 +4,16 @@ cat $1 |\
   jc --yaml |\
   jq '
     .[] 
-    | .kv_puts[] 
+    | .kv_puts
+    | .[] 
     | ("export VAULT_TOKEN=\"$(vault write -field=token auth/jwt/login role=\(.VAULT_AUTH_ROLE) jwt=$CI_JOB_JWT)\"", 
-      (to_entries | map(select(.key != "VAULT_AUTH_ROLE")) | .[] 
-      | .key as $path | (.value | to_entries) as $kvs
-        | ("rm -f .kv", 
-          ($kvs | .[] | .key as $key | .value as $value | "echo '"'"'\($key)=\($value)'"'"' >>.kv")),
-          "jc --kv <.kv >.json",
-          "rm .kv",
-          "vault kv put \($path) @.json",
-          "rm .json"))
+      (to_entries | map(select(.key != "VAULT_AUTH_ROLE")) | .[] | .key as $var | .value 
+        | "vault kv put "+ if has("mount") then "-mount=\(.mount) " else "" end + .path + " " + .field + "=$" + $var),
+      "unset VAULT_TOKEN")
   ' -r
 elif [ "$2" == "--markdown" ] || [ "$2" == "-m" ]; then
-echo "| role | path| key | value |"
-echo "| --- | --- | --- | --- |"
+echo "| variable | role | option | path | field |"
+echo "| --- | --- | --- | --- | --- |"
 cat $1 |\
   jc --yaml |\
   jq '
@@ -28,9 +24,10 @@ cat $1 |\
     | to_entries 
     | map(select(.key != "VAULT_AUTH_ROLE")) 
     | .[] 
-    | .key as $path
-    | (.value | to_entries) as $kvs
-    | ($kvs | .[] | .key as $key | .value as $value
-      | ("| \($role) | \($path) | \($key) | \($value) |"))
+    | .key as $var 
+    | .value 
+    | .path as $path
+    | (if has("mount") then "-mount=\(.mount) " else "" end + if has("format") then "-format=\(.format) " else "" end) as $option
+    | ("| \($var) | \($role) | \($option) | \(.path) | \(.field) |")
   ' -r
 fi
