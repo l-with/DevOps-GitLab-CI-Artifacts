@@ -214,29 +214,27 @@ If in a job other artifacts are defined, use
 
 to ensure fetching `vault_kv_puts.sh` from artifacts.
 
-The shell script `vault_kv_puts.sh` interpretes a yaml file describing describing vault secrets, for instance:
+The shell script `vault_kv_puts.sh` interpretes a yaml file describing vault key value pairs, for instance:
 
 ```yaml
 kv_puts:
   - VAULT_AUTH_ROLE: mailcow
-    TLSA_DNS_RECORD_VALUE:
-      mount: gitlab
-      path:  mailcow/kv
-      field: TLSA_dns_record_value
-    DKIM_DNS_RECORD_VALUE: 
-      mount: gitlab
-      path:  mailcow/kv
-      field: DKIM_dns_record_value
+    gitlab/mailcow/kv:
+      TLSA_dns_record_value: TLSA_DNS_RECORD_VALUE
+      DKIM_dns_record_value: DKIM_DNS_RECORD_VALUE
+    gitlab/mailcow/kv2:
+      TLSA_dns_record_value2: TLSA_DNS_RECORD_VALUE2
+      DKIM_dns_record_value2: DKIM_DNS_RECORD_VALUE2
   - VAULT_AUTH_ROLE: terraform
-    TOKEN: 
-      path:  gitlab/terraform/kv
-      field: token
-    KEY:
-      path:  gitlab/terraform/kv
-      field: key
+    gitlab/terraform/kv:
+      TOKEN: token
+      KEY:   key
+    gitlab/terraform/kv2:
+      TOKEN2: token2
+      KEY2:   key2
 ```
 
-`path` and `value` are mandatory, `mount` is optional.
+`path` and `value` are mandatory, `format` is optional.
 
 The syntax is closely related to use the `vault kv put` command.
 
@@ -285,13 +283,17 @@ You can output a Markdown table documenting the secrets by
 ./vault_kv_puts.sh kv_puts.yml --markdown
 ```
 
-For the kv_puts yaml example above the result is
+For the secrets yaml example above the result is
 
-| variable | role | option | path | field |
-| --- | --- | --- | --- | --- |
-| TLSA_DNS_RECORD_VALUE | mailcow | -mount=gitlab  | mailcow/kv | TLSA_dns_record_value |
-| DKIM_DNS_RECORD_VALUE | mailcow | -mount=gitlab  | mailcow/kv | DKIM_dns_record_value |
-| TOKEN | terraform |  | gitlab/terraform/kv | token |
-| KEY | terraform |  | gitlab/terraform/kv | key |
+| role | path| key | value |
+| --- | --- | --- | --- |
+| mailcow | gitlab/mailcow/kv | TLSA_dns_record_value | TLSA_DNS_RECORD_VALUE |
+| mailcow | gitlab/mailcow/kv | DKIM_dns_record_value | DKIM_DNS_RECORD_VALUE |
+| mailcow | gitlab/mailcow/kv2 | TLSA_dns_record_value2 | TLSA_DNS_RECORD_VALUE2 |
+| mailcow | gitlab/mailcow/kv2 | DKIM_dns_record_value2 | DKIM_DNS_RECORD_VALUE2 |
+| terraform | gitlab/mailcow/kv | TLSA_dns_record_value | TLSA_DNS_RECORD_VALUE |
+| terraform | gitlab/mailcow/kv | DKIM_dns_record_value | DKIM_DNS_RECORD_VALUE |
+| terraform | gitlab/mailcow/kv2 | TLSA_dns_record_value2 | TLSA_DNS_RECORD_VALUE2 |
+| terraform | gitlab/mailcow/kv2 | DKIM_dns_record_value2 | DKIM_DNS_RECORD_VALUE2 |
 
 This output can pasted into the `README.md` of the project for documentation purpose.
