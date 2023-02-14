@@ -4,6 +4,15 @@ include:
   - project: 'packages-and-registries/gitlab-ci.yml'
     file:    '/vault/Vault.tools.gitlab-ci.yml'
 
+stages:
+  - vault_tools_sh
+  - init
+  - validate
+  - build
+  - test
+  - deploy
+  - cleanup
+
 .before-script-secrets-vars: &before-script-secrets-vars
     - cd $TF_ROOT
     - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
