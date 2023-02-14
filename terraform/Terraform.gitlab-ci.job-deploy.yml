@@ -10,7 +10,7 @@
         set -a && source ${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env && set +a
       fi
 
-include: Terraform.base.gitlab-ci.job-deploy-without-before-script.yml
+include: /Terraform/Terraform.base.gitlab-ci.job-deploy-without-before-script.yml
 
 deploy:
   extends: 
