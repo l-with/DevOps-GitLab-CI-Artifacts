@@ -1,0 +1,15 @@
+destroy:
+  extends: .destroy
+  needs:
+    - vault_tools_sh
+    - validate
+  dependencies:
+    - vault_tools_sh
+  environment:
+    name:   $ENVIRONMENT
+    action: stop
+  before_script:
+    - *before-script-secrets-vars
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      when: manual

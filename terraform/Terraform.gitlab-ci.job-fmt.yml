@@ -1,0 +1,4 @@
+fmt:
+  extends: .fmt
+  rules:
+    - when: always
