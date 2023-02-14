@@ -15,6 +15,6 @@ include: /terraform/Terraform.base.gitlab-ci.job-deploy-without-before-script.ym
 deploy:
   extends: 
     - .deploy
-    - .deploy_without_before_script
+    - .deploy-without-before-script
   before_script:
     - *before-script-secrets-vars
