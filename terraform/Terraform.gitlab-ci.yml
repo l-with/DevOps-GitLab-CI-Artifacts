@@ -1,10 +1,8 @@
 include:
-  - project: 'packages-and-registries/gitlab-ci.yml'
-    file:    
-      - '/terraform/Terraform.base.gitlab-ci.yml'
-      - '/terraform/Terraform.gitlab-ci.header.yml'
-      - '/terraform/Terraform.gitlab-ci.job-fmt.yml'
-      - '/terraform/Terraform.gitlab-ci.job-validate.yml'
-      - '/terraform/Terraform.gitlab-ci.job-build.yml'
-      - '/terraform/Terraform.gitlab-ci.job-deploy.yml'
-      - '/terraform/Terraform.gitlab-ci.job-destroy.yml'
+  - '/terraform/Terraform.base.gitlab-ci.yml'
+  - '/terraform/Terraform.gitlab-ci.header.yml'
+  - '/terraform/Terraform.gitlab-ci.job-fmt.yml'
+  - '/terraform/Terraform.gitlab-ci.job-validate.yml'
+  - '/terraform/Terraform.gitlab-ci.job-build.yml'
+  - '/terraform/Terraform.gitlab-ci.job-deploy.yml'
+  - '/terraform/Terraform.gitlab-ci.job-destroy.yml'
