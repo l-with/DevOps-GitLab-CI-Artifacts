@@ -13,6 +13,9 @@ stages:
   - deploy
   - cleanup
 
+image:
+  name: lwith/gitlab-devops:latest
+
 .fmt:
   extends: .terraform:fmt
   rules:
