@@ -1,14 +1,5 @@
-.before-script-secrets-vars: &before-script-secrets-vars
-    - cd $TF_ROOT
-    - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
-    - >
-      if [ -f "${CI_PROJECT_DIR}/environment/default.env" ]; then
-        set -a && source ${CI_PROJECT_DIR}/environment/default.env && set +a
-      fi
-    - >
-      if [ -f "${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env" ]; then
-        set -a && source ${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env && set +a
-      fi
+include: 
+  - '/terraform/Terraform.base.gitlab-ci.before-script-secrets-vars.yml'
 
 build:
   extends: .build
@@ -18,6 +9,6 @@ build:
   dependencies:
     - vault_tools_sh
   before_script:
-    - *before-script-secrets-vars
+    - !reference [.before_script_secrets_vars, before_script]
   rules:
     - when: on_success

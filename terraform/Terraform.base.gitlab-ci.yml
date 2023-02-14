@@ -1,8 +1,8 @@
 include:
   - template: Terraform/Base.latest.gitlab-ci.yml  # https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/ci/templates/Terraform/Base.latest.gitlab-ci.yml
   - template: Jobs/SAST-IaC.latest.gitlab-ci.yml   # https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/ci/templates/Jobs/SAST-IaC.latest.gitlab-ci.yml
-  - project: 'packages-and-registries/gitlab-ci.yml'
-    file:    '/vault/Vault.tools.gitlab-ci.yml'
+  - '/vault/Vault.tools.gitlab-ci.yml'
+  - '/terraform/Terraform.base.gitlab-ci.before-script-secrets-vars.yml'
 
 stages:
   - vault_tools_sh
@@ -12,18 +12,6 @@ stages:
   - test
   - deploy
   - cleanup
-
-.before-script-secrets-vars: &before-script-secrets-vars
-    - cd $TF_ROOT
-    - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
-    - >
-      if [ -f "${CI_PROJECT_DIR}/environment/default.env" ]; then
-        set -a && source ${CI_PROJECT_DIR}/environment/default.env && set +a
-      fi
-    - >
-      if [ -f "${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env" ]; then
-        set -a && source ${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env && set +a
-      fi
 
 .fmt:
   extends: .terraform:fmt
@@ -43,7 +31,7 @@ stages:
   dependencies:
     - vault_tools_sh
   before_script:
-    - *before-script-secrets-vars
+    - !reference [.before_script_secrets_vars, before_script]
   rules:
     - when: on_success
 
@@ -60,7 +48,7 @@ stages:
     auto_stop_in: $AUTO_STOP_IN
     on_stop:      destroy
   before_script:
-    - *before-script-secrets-vars
+    - !reference [.before_script_secrets_vars, before_script]
   rules:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
       when: on_success
@@ -76,7 +64,7 @@ stages:
     name:   $ENVIRONMENT
     action: stop
   before_script:
-    - *before-script-secrets-vars
+    - !reference [.before_script_secrets_vars, before_script]
   rules:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
       when: manual
