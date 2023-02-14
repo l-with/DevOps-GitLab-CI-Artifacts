@@ -2,22 +2,9 @@ include:
   - '/terraform/Terraform.gitlab-ci.before-script-secrets-vars.yml'
   - '/terraform/Terraform.base.gitlab-ci.job-deploy-without-before-script.yml'
 
-.setup: 
-  before_script:
-    - cd $TF_ROOT
-    - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
-    - >
-      if [ -f "${CI_PROJECT_DIR}/environment/default.env" ]; then
-        set -a && source ${CI_PROJECT_DIR}/environment/default.env && set +a
-      fi
-    - >
-      if [ -f "${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env" ]; then
-        set -a && source ${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env && set +a
-      fi
-
 deploy:
   extends: 
     - .deploy
     - .deploy-without-before-script
   before_script:
-    - !reference [.setup, before_script]
+    - !reference [.before_script_secrets_vars, before_script]
