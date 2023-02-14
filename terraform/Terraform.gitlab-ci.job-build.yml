@@ -1,10 +1,10 @@
 build:
 #  extends: .terraform:build
-  needs:
-    - vault_tools_sh
-    - validate
-  dependencies:
-    - vault_tools_sh
+#  needs:
+#    - vault_tools_sh
+#    - validate
+#  dependencies:
+#    - vault_tools_sh
   before_script:
     - *before-script-secrets-vars
   rules:
