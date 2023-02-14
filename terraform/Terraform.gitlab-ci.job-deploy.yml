@@ -1,5 +1,5 @@
 include: 
-  - '/terraform/Terraform.gitlab-ci.before-script-secrets-vars'
+  - '/terraform/Terraform.gitlab-ci.before-script-secrets-vars.yaml'
   - '/terraform/Terraform.base.gitlab-ci.job-deploy-without-before-script.yml'
 
 deploy:
