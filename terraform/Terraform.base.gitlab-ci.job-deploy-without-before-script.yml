@@ -1,0 +1,14 @@
+.deploy-without-before-script: 
+  needs:
+    - vault_tools_sh
+    - build
+  dependencies:
+    - vault_tools_sh
+    - build
+  environment:
+    name:         $ENVIRONMENT
+    auto_stop_in: $AUTO_STOP_IN
+    on_stop:      destroy
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      when: on_success
