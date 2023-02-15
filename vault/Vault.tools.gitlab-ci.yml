@@ -8,11 +8,11 @@ vault_tools_sh:
   script:
     - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_secrets.sh
     - chmod +x vault_secrets.sh
-    - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_kv_puts.sh
+    - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_kv_puts.sh
     - chmod +x vault_kv_puts.sh
-    - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_kv2_patches.sh
+    - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_kv2_patches.sh
     - chmod +x vault_kv2_patches.sh
-    - curl --remote-name https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_token.sh
+    - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/gitlab-ci.yml/-/raw/main/vault/vault_token.sh
     - chmod +x vault_token.sh
   artifacts:
     expire_in: 1h
