@@ -1,4 +1,6 @@
-.destroy-without-before-script: 
+.destroy-without-before-script:
+  extends: 
+    - .destroy
   needs:
     - vault_tools_sh
     - validate
