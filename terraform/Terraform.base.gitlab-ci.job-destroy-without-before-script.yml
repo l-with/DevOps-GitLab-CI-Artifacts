@@ -1,0 +1,12 @@
+.destroy-without-before-script: 
+  needs:
+    - vault_tools_sh
+    - validate
+  dependencies:
+    - vault_tools_sh
+  environment:
+    name:   $ENVIRONMENT
+    action: stop
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      when: manual
