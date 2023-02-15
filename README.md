@@ -8,7 +8,53 @@ The CI template `terraform/Terraform.gitlab-ci.yml` is based on the [GitLab terr
 
 The template modifies the [GitLab terraform CI template](https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.latest.gitlab-ci.yml) so that the [GitLab flow](https://docs.gitlab.com/ee/topics/gitlab_flow.html#introduction-to-gitlab-flow) can be used (s. example project [GitLab Terraform GitLab Flow](https://gitlab.with.de/try/gitlab-terraform-gitlab-flow)).
 
-The template is based on `terraform/Terraform.base.gitlab-ci.yml`.
+The template is based on `terraform/Terraform.base.gitlab-ci.yml` and includes the header yaml and a yaml for each job:
+
+- ['/terraform/Terraform.base.gitlab-ci.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.header.yml)
+- ['/terraform/Terraform.gitlab-ci.header.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.header.yml)
+- ['/terraform/Terraform.gitlab-ci.job-fmt.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-fmt.yml)
+- ['/terraform/Terraform.gitlab-ci.job-validate.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-validate.yml)
+- ['/terraform/Terraform.gitlab-ci.job-build.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-build.yml)
+- ['/terraform/Terraform.gitlab-ci.job-deploy.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-deploy.yml)
+- ['/terraform/Terraform.gitlab-ci.job-destroy.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-destroy.yml)
+
+The deploy job yaml defines the deploy job extending `.deploy-without-before-script`.
+The same pattern is also used for the destroy job.
+
+The CI yaml ['/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the deploy and the destroy job.
+
+There a couple of before_scripts that can be used by [reference-tags](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#reference-tags) in
+
+- ['/terraform/Terraform.base.gitlab-ci.before-script-secrets-vars.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.base.gitlab-ci.before-script-secrets-vars.yml)
+- ['/terraform/Terraform.base.gitlab-ci.before-scripts-ssh.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.base.gitlab-ci.before-scripts-ssh.yml)
+
+The simplest usage is
+
+```yaml
+include:
+  - project: 'packages-and-registries/gitlab-ci.yml'
+    file:    '/terraform/Terraform.gitlab-ci.yml'
+```
+
+A CI with extra before script in the deploy job is the following
+
+```yaml
+include:
+  - project: 'packages-and-registries/gitlab-ci.yml'
+    file:
+    - '/terraform/Terraform.base.gitlab-ci.before-scripts-ssh.yml'
+    - '/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'
+    - '/terraform/Terraform.base.gitlab-ci.job-deploy-without-before-script.yml'
+    - '/terraform/Terraform.gitlab-ci.job-destroy.yml'
+
+deploy:
+  extends: 
+    - .deploy-without-before-script
+  before_script:
+    - !reference [.before_script_secrets_vars, before_script]
+    - !reference [.before_script_ssh_agent_add_id, before_script] 
+    - !reference [.before_script_ssh_prepare_id, before_script]
+```
 
 ## trivy
 
