@@ -1,9 +1,0 @@
-.before_script_ssh: 
-  before_script:
-  - eval $(ssh-agent -s)
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-  - echo -e '#!/bin/sh\necho $TF_VAR_ssh_passphrase' > ~/.ssh/tmp && chmod 700 ~/.ssh/tmp
-  - echo "$TF_VAR_ssh_private_key" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh/tmp ssh-add -
-  - ssh-keyscan $CI_SERVER_HOST >> ~/.ssh/known_hosts
-  - chmod 644 ~/.ssh/known_hosts
