@@ -1,6 +1,7 @@
 include:
   - project: 'packages-and-registries/gitlab-ci.yml'
-    file:    '/terraform/Terraform.base.gitlab-ci.yml'
+    file:
+      - '/terraform/Terraform.base.gitlab-ci.yml'
 
 image:
   name: lwith/gitlab-devops:latest
