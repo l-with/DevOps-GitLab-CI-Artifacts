@@ -1,4 +1,6 @@
 .deploy-without-before-script: 
+  extends: 
+    - .deploy
   needs:
     - vault_tools_sh
     - build
