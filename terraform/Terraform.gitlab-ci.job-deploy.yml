@@ -4,7 +4,6 @@ include:
 
 deploy:
   extends: 
-    - .deploy
     - .deploy-without-before-script
   before_script:
     - !reference [.before_script_secrets_vars, before_script]
