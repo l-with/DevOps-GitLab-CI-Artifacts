@@ -52,8 +52,8 @@ deploy:
     - .deploy-without-before-script
   before_script:
     - !reference [.before_script_secrets_vars, before_script]
-    - !reference [.before_script_ssh_agent_add_id, before_script] 
     - !reference [.before_script_ssh_prepare_id, before_script]
+    - !reference [.before_script_ssh_agent_add_id, before_script] 
 ```
 
 ## trivy
