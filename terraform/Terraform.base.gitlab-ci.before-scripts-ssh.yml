@@ -1,11 +1,11 @@
 .before_script_ssh_prepare_id: 
   before_script:
-  - echo "SSH_PRIVATE_KEY" | tr -d '\r' > id
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > id
   - chmod g-rwx,o-rwx id
 
 .before_script_ssh_prepare_id_pub: 
   before_script:
-  - echo "SSH_PUBLIC_KEY" | tr -d '\r' > id.pub
+  - echo "$SSH_PUBLIC_KEY" | tr -d '\r' > id.pub
 
 .before_script_ssh_generate_id: 
   before_script:
