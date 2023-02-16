@@ -1,5 +1,5 @@
 include: 
-  - '/terraform/Terraform.base.gitlab-ci.before-script-secrets-vars.yml'
+  - '/terraform/Terraform.base.gitlab-ci.before-scripts.yml'
 
 build:
   extends: .build
