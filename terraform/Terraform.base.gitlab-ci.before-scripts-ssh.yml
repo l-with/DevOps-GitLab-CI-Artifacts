@@ -33,6 +33,6 @@
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
   - |
-    { sleep .1; echo $SSH_PASSPHRASE; } | script -q /dev/null ssh-add
+    { sleep .1; echo $SSH_PASSPHRASE; } | script -q /dev/null -c 'ssh-add'
   - ssh-keyscan $CI_SERVER_HOST >> ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
