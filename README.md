@@ -39,7 +39,7 @@ A CI with extra before scripts in the deploy job is the following
 include:
   - project: 'packages-and-registries/gitlab-ci.yml'
     file:
-    - '/terraform/Terraform.base.gitlab-ci.before-scripts-ssh.yml'
+    - '/terraform/Terraform.base.gitlab-ci.before-scripts.yml'
     - '/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'
     - '/terraform/Terraform.base.gitlab-ci.job-deploy-without-before-script.yml'
     - '/terraform/Terraform.gitlab-ci.job-destroy.yml'
