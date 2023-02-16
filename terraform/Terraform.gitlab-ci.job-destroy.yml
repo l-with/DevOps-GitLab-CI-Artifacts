@@ -3,6 +3,6 @@ include:
 
 destroy:
   extends: 
-    - .destroy-without-before-script
+    - .destroy_without_before_script
   before_script:
     - !reference [.before_script_secrets_vars, before_script]

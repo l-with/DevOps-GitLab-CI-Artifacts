@@ -1,4 +1,4 @@
-.deploy-without-before-script: 
+.deploy_without_before_script: 
   extends:
     - .deploy
   needs:

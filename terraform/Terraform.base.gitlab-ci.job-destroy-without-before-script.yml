@@ -1,4 +1,4 @@
-.destroy-without-before-script:
+.destroy_without_before_script:
   extends: 
     - .destroy
   needs:

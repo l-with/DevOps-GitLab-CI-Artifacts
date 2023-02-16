@@ -1,3 +1,16 @@
+.before_script_secrets_vars: 
+  before_script:
+    - cd $TF_ROOT
+    - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
+    - >
+      if [ -f "${CI_PROJECT_DIR}/environment/default.env" ]; then
+        set -a && source ${CI_PROJECT_DIR}/environment/default.env && set +a
+      fi
+    - >
+      if [ -f "${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env" ]; then
+        set -a && source ${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env && set +a
+      fi
+
 .before_script_ssh_prepare_id: 
   before_script:
   - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > id
@@ -20,7 +33,6 @@
   - export SSH_KEY_CERT="$(vault write -field=signed_key ${_VAULT_SSH_SIGNER_PATH} valid_principals="$VAULT_SSH_SIGNER_PRINCIPALS" public_key=@./id.pub)"
   - echo "$SSH_KEY_CERT" | tr -d '\r' > id-cert.pub
 
-
 .before_script_ssh_agent_add_id: 
   before_script:
   - eval $(ssh-agent -s)
@@ -39,3 +51,11 @@
     { sleep .1; echo $SSH_PASSPHRASE; } | script -q /dev/null -c 'ssh-add id'
   - ssh-keyscan $CI_SERVER_HOST >> ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
+
+.before_script_ansible_requirements:
+  before_script:
+  - cd $TF_ROOT
+  - rm -rvf $ANSIBLE_ROLES_PATH
+  - ansible-galaxy role install --role-file $ANSIBLE_PATH/ansible-requirements.yml
+  - rm -rf $ANSIBLE_COLLECTIONS_PATH
+  - ansible-galaxy collection install --requirements-file $ANSIBLE_PATH/ansible-requirements.yml --timeout $ANSIBLE_GALAXY_TIMEOUT

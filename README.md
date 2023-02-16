@@ -18,15 +18,12 @@ The template is based on `terraform/Terraform.base.gitlab-ci.yml` and includes t
 - ['/terraform/Terraform.gitlab-ci.job-deploy.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-deploy.yml)
 - ['/terraform/Terraform.gitlab-ci.job-destroy.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-destroy.yml)
 
-The deploy job yaml defines the deploy job extending `.deploy-without-before-script`.
+The deploy job yaml defines the deploy job extending `.deploy_without_before_script`.
 The same pattern is also used for the destroy job.
 
 The CI yaml ['/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the deploy and the destroy job.
 
-There a couple of before_scripts that can be used by [reference-tags](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#reference-tags) in
-
-- ['/terraform/Terraform.base.gitlab-ci.before-script-secrets-vars.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.base.gitlab-ci.before-script-secrets-vars.yml)
-- ['/terraform/Terraform.base.gitlab-ci.before-scripts-ssh.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.base.gitlab-ci.before-scripts-ssh.yml)
+There are a couple of before_scripts that can be used by [reference-tags](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#reference-tags) in ['/terraform/Terraform.base.gitlab-ci.before-scripts.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.base.gitlab-ci.before-scripts.yml).
 
 The simplest usage is
 
@@ -36,7 +33,7 @@ include:
     file:    '/terraform/Terraform.gitlab-ci.yml'
 ```
 
-A CI with extra before script in the deploy job is the following
+A CI with extra before scripts in the deploy job is the following
 
 ```yaml
 include:
@@ -49,11 +46,12 @@ include:
 
 deploy:
   extends: 
-    - .deploy-without-before-script
+    - .deploy_without_before_script
   before_script:
     - !reference [.before_script_secrets_vars, before_script]
     - !reference [.before_script_ssh_prepare_id, before_script]
     - !reference [.before_script_ssh_agent_add_id, before_script] 
+    - !reference [.before_script_ansible_requirements, before_script] 
 ```
 
 ## trivy

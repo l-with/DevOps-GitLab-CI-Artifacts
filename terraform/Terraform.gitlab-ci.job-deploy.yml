@@ -3,6 +3,6 @@ include:
 
 deploy:
   extends: 
-    - .deploy-without-before-script
+    - .deploy_without_before_script
   before_script:
     - !reference [.before_script_secrets_vars, before_script]
