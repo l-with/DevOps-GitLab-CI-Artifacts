@@ -1,7 +1,7 @@
 .before_script_secrets_vars: 
   before_script:
     - cd $TF_ROOT
-    - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml --debug >.secrets && . .secrets && rm .secrets
+    - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && cat .secrets && . .secrets && rm .secrets
     - >
       if [ -f "${CI_PROJECT_DIR}/environment/default.env" ]; then
         set -a && source ${CI_PROJECT_DIR}/environment/default.env && set +a
