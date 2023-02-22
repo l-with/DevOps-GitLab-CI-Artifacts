@@ -1,6 +1,7 @@
 .before_script_secrets_vars: 
   before_script:
     - cd $TF_ROOT
+    - echo $CI_JOB_JWT
     - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && cat .secrets && . .secrets && rm .secrets
     - >
       if [ -f "${CI_PROJECT_DIR}/environment/default.env" ]; then
