@@ -1,7 +1,7 @@
 .before_script_secrets_vars: 
   before_script:
     - cd $TF_ROOT
-    - ./vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
+    - $CI_PROJECT_DIR/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
     - >
       if [ -f "./environment/default.env" ]; then
         set -a && source ./environment/default.env && set +a
@@ -29,7 +29,7 @@
   before_script:
   - export _VAULT_SSH_SIGNER_PATH=${VAULT_SSH_SIGNER_PATH:-ssh-client-signer/sign/ssh-client-signer-gitlab}
   - export _VAULT_SSH_SIGNER_PRINCIPALS=${VAULT_SSH_SIGNER_PRINCIPALS:-root}
-  - ./vault_token.sh $VAULT_SSH_SIGN_ROLE
+  - $CI_PROJECT_DIR/vault_token.sh $VAULT_SSH_SIGN_ROLE
   - export SSH_KEY_CERT="$(vault write -field=signed_key ${_VAULT_SSH_SIGNER_PATH} valid_principals="$VAULT_SSH_SIGNER_PRINCIPALS" public_key=@./id.pub)"
   - echo "$SSH_KEY_CERT" | tr -d '\r' > id-cert.pub
 
