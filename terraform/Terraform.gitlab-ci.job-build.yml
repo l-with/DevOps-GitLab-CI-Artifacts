@@ -1,13 +1,9 @@
 include: 
-  - '/terraform/Terraform.base.gitlab-ci.before-scripts.yml'
+  - '/terraform/Terraform.base.gitlab-ci.job-build-without-before-script.yml'
 
 build:
-  extends: .build
-  needs:
-    - vault_tools_sh
-    - validate
-  dependencies:
-    - vault_tools_sh
+  extends: 
+    - .build_without_before_script
   before_script:
     - !reference [.before_script_secrets_vars, before_script]
   rules:

@@ -21,7 +21,10 @@ The template is based on `terraform/Terraform.base.gitlab-ci.yml` and includes t
 The deploy job yaml defines the deploy job extending `.deploy_without_before_script`.
 The same pattern is also used for the destroy job.
 
-The CI yaml ['/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the deploy and the destroy job.
+The CI yaml 
+
+- ['/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the deploy and destroy job
+- ['/terraform/Terraform.gitlab-ci.fmt-validate.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the build, deploy and destroy job
 
 There are a couple of before_scripts that can be used by [reference-tags](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#reference-tags) in ['/terraform/Terraform.base.gitlab-ci.before-scripts.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.base.gitlab-ci.before-scripts.yml).
 

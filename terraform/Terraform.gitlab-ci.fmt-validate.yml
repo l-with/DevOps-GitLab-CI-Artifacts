@@ -1,0 +1,4 @@
+include:
+  - '/terraform/Terraform.gitlab-ci.header.yml'
+  - '/terraform/Terraform.gitlab-ci.job-fmt.yml'
+  - '/terraform/Terraform.gitlab-ci.job-validate.yml'
