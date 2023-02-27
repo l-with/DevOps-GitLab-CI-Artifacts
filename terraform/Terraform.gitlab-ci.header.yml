@@ -26,7 +26,7 @@ workflow:
       AUTO_STOP_IN: "never"
 
 cache:
-  - key: ${CI_PROJECT_NAME}__${CI_COMMIT_BRANCH}
+  - key: ${CI_PROJECT_NAME}__${TF_ROOT}__${CI_COMMIT_BRANCH}
     paths:
       - $TF_ROOT/.terraform/
       - $TF_ROOT/.terraform.lock.hcl
