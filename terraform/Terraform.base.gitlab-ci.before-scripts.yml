@@ -1,14 +1,14 @@
 .before_script_secrets_vars: 
   before_script:
     - cd $TF_ROOT
-    - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
+    - ./vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
     - >
-      if [ -f "${CI_PROJECT_DIR}/environment/default.env" ]; then
-        set -a && source ${CI_PROJECT_DIR}/environment/default.env && set +a
+      if [ -f "./environment/default.env" ]; then
+        set -a && source ./environment/default.env && set +a
       fi
     - >
-      if [ -f "${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env" ]; then
-        set -a && source ${CI_PROJECT_DIR}/environment/${ENVIRONMENT}.env && set +a
+      if [ -f "./environment/${ENVIRONMENT}.env" ]; then
+        set -a && source ./environment/${ENVIRONMENT}.env && set +a
       fi
 
 .before_script_ssh_prepare_id: 
