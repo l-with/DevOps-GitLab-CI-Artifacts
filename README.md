@@ -70,10 +70,10 @@ The jobs are assigned to stage `scan`.
 
 The CI snippet `vault/Vault.tools.gitlab-ci.yml` combines all vault CI snippets:
 
-* [vault secrets](#vault-secrets)
-* [vault token](#vault-token)
-* [vault kv puts](#vault-kv-puts)
-* [vault kv2 patches](#vault-kv2-patches)
+- [vault secrets](#vault-secrets)
+- [vault token](#vault-token)
+- [vault kv puts](#vault-kv-puts)
+- [vault kv2 patches](#vault-kv2-patches)
 
 and puts all shell scripts into artifacts.
 Some scripts use [jq](https://stedolan.github.io/jq/) and [jc](https://github.com/kellyjonbrazil/jc) and outputs commands using [vault](https://www.hashicorp.com/products/vault).
