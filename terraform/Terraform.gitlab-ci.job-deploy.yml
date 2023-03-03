@@ -1,8 +1,19 @@
-include: 
-  - '/terraform/Terraform.base.gitlab-ci.job-deploy-without-before-script.yml'
 
-deploy:
-  extends: 
-    - .deploy_without_before_script
+deploy: 
+  extends:
+    - .deploy
+  needs:
+    - vault_tools_sh
+    - build
+  dependencies:
+    - vault_tools_sh
+    - build
   before_script:
     - !reference [.before_script_secrets_vars, before_script]
+  environment:
+    name:         $ENVIRONMENT
+    auto_stop_in: $AUTO_STOP_IN
+    on_stop:      destroy
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      when: on_success
