@@ -18,10 +18,7 @@ The template is based on `terraform/Terraform.base.gitlab-ci.yml` and includes t
 - ['/terraform/Terraform.gitlab-ci.job-deploy.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-deploy.yml)
 - ['/terraform/Terraform.gitlab-ci.job-destroy.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-destroy.yml)
 
-The deploy job yaml defines the deploy job extending `.deploy_without_before_script`.
-The same pattern is also used for the destroy job.
-
-The CI yaml 
+The CI yaml
 
 - ['/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the deploy and destroy job
 - ['/terraform/Terraform.gitlab-ci.fmt-validate.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the build, deploy and destroy job
@@ -49,9 +46,9 @@ include:
 
 deploy:
   extends: 
-    - .deploy_without_before_script
+    - .deploy
   before_script:
-    - !reference [.before_script_secrets_vars, before_script]
+    - !reference [.deploy, before_script]
     - !reference [.before_script_ssh_prepare_id, before_script]
     - !reference [.before_script_ssh_agent_add_id, before_script] 
     - !reference [.before_script_ansible_requirements, before_script] 
