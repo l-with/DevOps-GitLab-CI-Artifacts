@@ -1,8 +1,14 @@
-include: 
-  - '/terraform/Terraform.base.gitlab-ci.job-destroy-without-before-script.yml'
-
 destroy:
   extends: 
-    - .destroy_without_before_script
-  before_script:
-    - !reference [.before_script_secrets_vars, before_script]
+    - .destroy
+  needs:
+    - vault_tools_sh
+    - validate
+  dependencies:
+    - vault_tools_sh
+  environment:
+    name:   $ENVIRONMENT
+    action: stop
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      when: manual
