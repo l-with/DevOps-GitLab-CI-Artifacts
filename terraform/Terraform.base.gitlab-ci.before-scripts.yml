@@ -16,6 +16,10 @@
         set -a && source ./environment/${ENVIRONMENT}.env && set +a
       fi
 
+.before_script_vault_token:
+  before_script:
+  - . ${CI_PROJECT_DIR}/vault_token.sh ${VAULT_TOKEN_ROLE}
+
 .before_script_ssh_prepare_id: 
   before_script:
   - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > id
