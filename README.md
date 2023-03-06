@@ -10,20 +10,20 @@ The template modifies the [GitLab terraform CI template](https://gitlab.com/gitl
 
 The template is based on `terraform/Terraform.base.gitlab-ci.yml` and includes the header yaml and a yaml for each job:
 
-- ['/terraform/Terraform.base.gitlab-ci.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.header.yml)
-- ['/terraform/Terraform.gitlab-ci.header.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.header.yml)
-- ['/terraform/Terraform.gitlab-ci.job-fmt.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-fmt.yml)
-- ['/terraform/Terraform.gitlab-ci.job-validate.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-validate.yml)
-- ['/terraform/Terraform.gitlab-ci.job-build.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-build.yml)
-- ['/terraform/Terraform.gitlab-ci.job-deploy.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-deploy.yml)
-- ['/terraform/Terraform.gitlab-ci.job-destroy.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.job-destroy.yml)
+- ['/terraform/Terraform.base.gitlab-ci.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.header.yml)
+- ['/terraform/Terraform.gitlab-ci.header.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.header.yml)
+- ['/terraform/Terraform.gitlab-ci.job-fmt.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.job-fmt.yml)
+- ['/terraform/Terraform.gitlab-ci.job-validate.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.job-validate.yml)
+- ['/terraform/Terraform.gitlab-ci.job-build.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.job-build.yml)
+- ['/terraform/Terraform.gitlab-ci.job-deploy.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.job-deploy.yml)
+- ['/terraform/Terraform.gitlab-ci.job-destroy.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.job-destroy.yml)
 
 The CI yaml
 
-- ['/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the deploy and destroy job
-- ['/terraform/Terraform.gitlab-ci.fmt-validate.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the build, deploy and destroy job
+- ['/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the deploy and destroy job
+- ['/terraform/Terraform.gitlab-ci.fmt-validate.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the build, deploy and destroy job
 
-There are a couple of before_scripts that can be used by [reference-tags](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#reference-tags) in ['/terraform/Terraform.base.gitlab-ci.before-scripts.yml'](https://gitlab.with.de/packages-and-registries/gitlab-ci.yml/-/blob/main/terraform/Terraform.base.gitlab-ci.before-scripts.yml).
+There are a couple of before_scripts that can be used by [reference-tags](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#reference-tags) in ['/terraform/Terraform.base.gitlab-ci.before-scripts.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.base.gitlab-ci.before-scripts.yml).
 
 The simplest usage is
 

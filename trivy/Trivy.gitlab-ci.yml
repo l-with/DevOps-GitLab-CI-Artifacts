@@ -14,9 +14,9 @@ trivy_prepare_scan:
   stage: scan
   script:
     # download templates
-    - time curl --remote-name ${CI_SERVER_URL}/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/html.tpl
-    - time curl --remote-name ${CI_SERVER_URL}/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/gitlab.tpl
-    - time curl --remote-name ${CI_SERVER_URL}/packages-and-registries/gitlab-ci.yml/-/raw/main/trivy/junit.tpl
+    - time curl --remote-name ${CI_SERVER_URL}/packages-and-registries/devops-ci-artifacts/-/raw/main/trivy/html.tpl
+    - time curl --remote-name ${CI_SERVER_URL}/packages-and-registries/devops-ci-artifacts/-/raw/main/trivy/gitlab.tpl
+    - time curl --remote-name ${CI_SERVER_URL}/packages-and-registries/devops-ci-artifacts/-/raw/main/trivy/junit.tpl
   artifacts:
     paths:
       - html.tpl

@@ -3,9 +3,6 @@ include:
     file:
       - '/terraform/Terraform.base.gitlab-ci.yml'
 
-image:
-  name: lwith/gitlab-devops:latest
-
 variables:
   ENVIRONMENT:       $CI_COMMIT_BRANCH
   TF_STATE_NAME:     $ENVIRONMENT
@@ -29,4 +26,3 @@ cache:
   - key: ${CI_PROJECT_NAME}__${TF_ROOT}__${CI_COMMIT_BRANCH}
     paths:
       - $TF_ROOT/.terraform/
-      - $TF_ROOT/.terraform.lock.hcl
