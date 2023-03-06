@@ -1,7 +1,5 @@
 include:
-  - project: 'packages-and-registries/gitlab-ci.yml'
-    file:
-      - '/terraform/Terraform.base.gitlab-ci.yml'
+  - '/terraform/Terraform.base.gitlab-ci.yml'
 
 variables:
   ENVIRONMENT:       $CI_COMMIT_BRANCH
