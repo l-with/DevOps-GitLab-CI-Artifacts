@@ -31,6 +31,9 @@ The simplest usage is
 include:
   - project: 'packages-and-registries/gitlab-ci.yml'
     file:    '/terraform/Terraform.gitlab-ci.yml'
+
+image:
+  name: lwith/gitlab-devops:latest
 ```
 
 A CI with extra before scripts in the deploy job is the following
@@ -43,6 +46,9 @@ include:
     - '/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'
     - '/terraform/Terraform.base.gitlab-ci.job-deploy-without-before-script.yml'
     - '/terraform/Terraform.gitlab-ci.job-destroy.yml'
+
+image:
+  name: lwith/gitlab-devops:latest
 
 deploy:
   extends: 
