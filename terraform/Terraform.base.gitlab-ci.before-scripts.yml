@@ -2,11 +2,6 @@
   before_script:
     - cd $TF_ROOT
     - $CI_PROJECT_DIR/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
-    - download-secure-files
-    - >
-      for env_file in .secret_files/*.env; do 
-        set -a && source $env_file && set +a
-      done
     - >
       if [ -f "./environment/default.env" ]; then
         set -a && source ./environment/default.env && set +a
@@ -15,6 +10,14 @@
       if [ -f "./environment/${ENVIRONMENT}.env" ]; then
         set -a && source ./environment/${ENVIRONMENT}.env && set +a
       fi
+
+.before_script_secrets_env_files: 
+  before_script:
+    - download-secure-files
+    - >
+      for env_file in .secret_files/*.env; do 
+        set -a && source $env_file && set +a
+      done
 
 .before_script_vault_token:
   before_script:
