@@ -1,5 +1,9 @@
 validate:
   extends: .validate
+  needs:
+    - vault_tools_sh
+  dependencies:
+    - vault_tools_sh
   before_script:
     - cd $TF_ROOT
     - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml --markdown
