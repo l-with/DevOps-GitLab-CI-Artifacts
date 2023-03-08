@@ -29,7 +29,7 @@ The simplest usage is
 
 ```yaml
 include:
-  - project: 'packages-and-registries/gitlab-ci.yml'
+  - project: 'packages-and-registries/devops-ci-artifacts.yml'
     file:    '/terraform/Terraform.gitlab-ci.yml'
 
 image:
@@ -40,7 +40,7 @@ A CI with extra before scripts in the deploy job is the following
 
 ```yaml
 include:
-  - project: 'packages-and-registries/gitlab-ci.yml'
+  - project: 'packages-and-registries/devops-ci-artifacts'
     file:
     - '/terraform/Terraform.base.gitlab-ci.before-scripts.yml'
     - '/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'
