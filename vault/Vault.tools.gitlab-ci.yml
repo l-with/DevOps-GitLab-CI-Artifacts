@@ -14,8 +14,6 @@ vault_tools_sh:
     - chmod +x vault_kv2_patches.sh
     - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/devops-ci-artifacts/-/raw/main/vault/vault_token.sh
     - chmod +x vault_token.sh
-    - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/devops-ci-artifacts/-/raw/main/vault/vault_test.sh
-    - chmod +x vault_test.sh
   artifacts:
     expire_in: 1h
     paths:
@@ -23,4 +21,3 @@ vault_tools_sh:
       - vault_kv_puts.sh
       - vault_kv2_patches.sh
       - vault_token.sh
-      - vault_test.sh
