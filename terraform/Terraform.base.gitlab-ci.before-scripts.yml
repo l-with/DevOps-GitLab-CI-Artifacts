@@ -10,14 +10,6 @@
       if [ -f "$CI_PROJECT_DIR/environment/${ENVIRONMENT}.env" ]; then
         set -a && source $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env && set +a
       fi
-    - >
-      if [ -f "./environment/default.env" ]; then
-        set -a && source ./environment/default.env && set +a
-      fi
-    - >
-      if [ -f "./environment/${ENVIRONMENT}.env" ]; then
-        set -a && source ./environment/${ENVIRONMENT}.env && set +a
-      fi
 
 .before_script_secrets_env_files: 
   before_script:
