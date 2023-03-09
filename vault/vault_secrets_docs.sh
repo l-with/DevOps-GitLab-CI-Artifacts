@@ -15,20 +15,26 @@ do
     IFS='_' read -a PARTS <<<"$ENVIRONMENT_PIPELINE"
     export ENVIRONMENT=${PARTS[0]}
     export PIPELINE=${PARTS[1]}
+    
+    echo $ENVIRONMENT $PIPELINE $SUB_PIPELINE
 
-    if [ $PIPELINE != SUB_PIPELINE ]; then
+    if [ $PIPELINE != $SUB_PIPELINE ]; then
+        echo not my pipeline
         continue
     fi
-    
+
     export BEGIN_LINE=$(grep -n -m 1 '<!-- BEGIN_VAULT_SECRETS_DOCS_'"$ENVIRONMENT_PIPELINE"' -->' $README_MD | cut -d ':' -f 1)
     export END_LINE=$(grep -n -m 1 '<!-- END_VAULT_SECRETS_DOCS_'"$ENVIRONMENT_PIPELINE"' -->' $README_MD | cut -d ':' -f 1)
     export NUM_LINES=$(cat $README_MD | wc -l)
-    let TAIL_LINES=NUM_LINES-END_LINE+1
-    # echo $ENVIRONMENT $BEGIN_LINE $END_LINE $NUM_LINES $TAIL_LINES
+    let TAIL_LINES=2+NUM_LINES-END_LINE
 
-    TEMP_README_MD=$(mktemp)
+    echo $ENVIRONMENT $BEGIN_LINE $END_LINE $NUM_LINES $TAIL_LINES
+
+    TEMP_README_MD=$(mktemp -t $README_MD)
     head --lines=$BEGIN_LINE $README_MD > $TEMP_README_MD
+    echo --- >> $TEMP_README_MD
     vault_secrets.sh secrets/$ENVIRONMENT.yml --markdown >> $TEMP_README_MD
+    echo --- >> $TEMP_README_MD
     tail --lines=$TAIL_LINES $README_MD >> $TEMP_README_MD
 
     diff $TEMP_README_MD ${README_MD} >/dev/null
@@ -36,7 +42,7 @@ do
         echo ${README_MD} changed by secrets/$ENVIRONMENT.yml
         CHANGED=1
     fi
-    mv $TEMP_README_MD ${README_MD}
+    mv $TEMP_README_MD .
 done < .vault_secrets_docs
 
 rm .vault_secrets_docs
