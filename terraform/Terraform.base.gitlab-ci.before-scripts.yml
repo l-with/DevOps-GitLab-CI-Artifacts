@@ -2,6 +2,10 @@
   before_script:
     - cd ${TF_ROOT}
     - echo ${ENVIRONMENT}
+    - >
+      if [ -f "secrets/default.yml" ]; then
+        $CI_PROJECT_DIR/vault_secrets.sh secrets/default.yml >.secrets && . .secrets && rm .secrets
+      fi
     - $CI_PROJECT_DIR/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
     - >
       if [ -f "$CI_PROJECT_DIR/environment/default.env" ]; then
