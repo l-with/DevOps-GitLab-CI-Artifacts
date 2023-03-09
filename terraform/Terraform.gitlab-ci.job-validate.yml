@@ -6,7 +6,6 @@ validate:
     - vault_tools_sh
   before_script:
     - cd $TF_ROOT
-    - ${CI_PROJECT_DIR}/vault_test.sh
     - echo cat secrets/${ENVIRONMENT}.yml
     - cat secrets/${ENVIRONMENT}.yml
     - echo ls -l ${CI_PROJECT_DIR}
