@@ -32,9 +32,7 @@ do
 
     TEMP_README_MD=$(mktemp -t $README_MD)
     head --lines=$BEGIN_LINE $README_MD > $TEMP_README_MD
-    echo --- >> $TEMP_README_MD
     vault_secrets.sh secrets/$ENVIRONMENT.yml --markdown >> $TEMP_README_MD
-    echo --- >> $TEMP_README_MD
     tail --lines=$TAIL_LINES $README_MD >> $TEMP_README_MD
 
     diff $TEMP_README_MD ${README_MD} >/dev/null
