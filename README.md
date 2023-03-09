@@ -23,8 +23,6 @@ The CI yaml
 - ['/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the deploy and destroy job
 - ['/terraform/Terraform.gitlab-ci.fmt-validate.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the build, deploy and destroy job
 
-There are a couple of before_scripts that can be used by [reference-tags](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#reference-tags) in ['/terraform/Terraform.base.gitlab-ci.before-scripts.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.base.gitlab-ci.before-scripts.yml).
-
 The simplest usage is
 
 ```yaml
@@ -59,6 +57,33 @@ deploy:
     - !reference [.before_script_ssh_agent_add_id, before_script] 
     - !reference [.before_script_ansible_requirements, before_script] 
 ```
+
+There are a couple of before_scripts that can be used by [reference-tags](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#reference-tags) in ['/terraform/Terraform.base.gitlab-ci.before-scripts.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.base.gitlab-ci.before-scripts.yml).
+
+The most often important ones are described here.
+
+### before_script_secrets_vars
+
+- fetches the secrets in `$TF_ROOT/secrets` from vault:
+  - `default.yml` if the file  it exists
+  - `${ENVIRONMENT}.yml` if the file it exists
+- fetches the environment variable values from `.env`-files in `$CI_PROJECT_DIR/environment``
+  - `default.env` if the file  it exists
+  - `${ENVIRONMENT}.env` if the file exists
+
+### before_script_secrets_env_files
+
+- downloads the secure files
+- fetches the environment variable values from `.env`-files in `.secret_files`
+
+### before_script_vault_token
+
+- fetches a vault token for the role `${VAULT_TOKEN_ROLE}` with [vault_token.sh](#vault-token)
+
+### before_script_ansible_requirements
+
+- installs the ansible roles defined in `$ANSIBLE_PATH/ansible-requirements.yml` into `$ANSIBLE_ROLES_PATH`
+- installs the ansible collections defined in `$ANSIBLE_PATH/ansible-requirements.yml` into `$ANSIBLE_COLLECTIONS_PATH` with timeout `$ANSIBLE_GALAXY_TIMEOUT`
 
 ## trivy
 
@@ -176,11 +201,12 @@ executes the commands produced by `vault_secrets.sh` in the execution context.
 
 You have to set `VAULT_ADDR` and possibly `VAULT_CACERT` for using `vault_secrets.sh`.
 
-It is a good pratice to use [YAML anchors for scripts](https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#yaml-anchors-for-scripts) by defining in the CI definition
+It is a good pratice to use [!reference tags]https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#reference-tags) by defining in the CI definition
 
 ```yaml
-.before-script-vault: &before-script-vault
-  - ./vault_secrets.sh secrets.yml >.secrets && . .secrets && rm .secrets
+.before-script-vault:
+  before_script:
+    - ./vault_secrets.sh secrets.yml >.secrets && . .secrets && rm .secrets
 ```
 
 ### Test
