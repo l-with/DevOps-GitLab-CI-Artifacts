@@ -11,7 +11,7 @@ validate:
     - echo ls -l ${CI_PROJECT_DIR}
     - ls -l ${CI_PROJECT_DIR}
     - echo ${CI_PROJECT_DIR}
-    - ${CI_PROJECT_DIR}/vault_test.sh
+    - $CI_PROJECT_DIR/vault_test.sh
     - echo cat ${CI_PROJECT_DIR}/vault_secrets.sh
     - cat ${CI_PROJECT_DIR}/vault_secrets.sh
     - echo ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml --markdown
