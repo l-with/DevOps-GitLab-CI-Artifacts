@@ -6,7 +6,10 @@
       if [ -f "secrets/default.yml" ]; then
         $CI_PROJECT_DIR/vault_secrets.sh secrets/default.yml >.secrets && . .secrets && rm .secrets
       fi
-    - $CI_PROJECT_DIR/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
+    - >
+      if [ -f "secrets/${ENVIRONMENT}.yml" ]; then
+        $CI_PROJECT_DIR/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
+      fi
     - >
       if [ -f "$CI_PROJECT_DIR/environment/default.env" ]; then
         set -a && source $CI_PROJECT_DIR/environment/default.env && set +a
