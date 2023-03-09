@@ -6,10 +6,13 @@ validate:
     - vault_tools_sh
   before_script:
     - cd $TF_ROOT
+    - echo cat secrets/${ENVIRONMENT}.yml
     - cat secrets/${ENVIRONMENT}.yml
+    - echo ls -l ${CI_PROJECT_DIR}
     - ls -l ${CI_PROJECT_DIR}
     - echo ${CI_PROJECT_DIR}
-    # - cat ${CI_PROJECT_DIR}/vault_secrets.sh
+    - echo cat ${CI_PROJECT_DIR}/vault_secrets.sh
+    - cat ${CI_PROJECT_DIR}/vault_secrets.sh
     - echo ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml --markdown
     - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml --markdown
   rules:
