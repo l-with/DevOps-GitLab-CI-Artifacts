@@ -6,7 +6,7 @@ validate:
     - vault_tools_sh
   before_script:
     - cd $TF_ROOT
-    - ls -l /
+    - ls -l ${CI_PROJECT_DIR}
     - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml --markdown
   rules:
     - when: always
