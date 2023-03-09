@@ -10,6 +10,7 @@ validate:
     - ls -l ${CI_PROJECT_DIR}
     - echo ${CI_PROJECT_DIR}
     # - cat ${CI_PROJECT_DIR}/vault_secrets.sh
+    - echo ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml --markdown
     - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml --markdown
   rules:
     - when: always
