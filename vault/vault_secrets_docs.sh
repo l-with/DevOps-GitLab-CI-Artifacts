@@ -16,9 +16,9 @@ do
     export ENVIRONMENT=${PARTS[0]}
     export PIPELINE=${PARTS[1]}
     
-    echo $ENVIRONMENT $PIPELINE $SUB_PIPELINE
+    # echo "'"$ENVIRONMENT"'" "'"$PIPELINE"'" "'"$SUB_PIPELINE"'"
 
-    if [ $PIPELINE != $SUB_PIPELINE ]; then
+    if [ "$PIPELINE" != "$SUB_PIPELINE" ]; then
         echo not my pipeline
         continue
     fi
@@ -26,7 +26,7 @@ do
     export BEGIN_LINE=$(grep -n -m 1 '<!-- BEGIN_VAULT_SECRETS_DOCS_'"$ENVIRONMENT_PIPELINE"' -->' $README_MD | cut -d ':' -f 1)
     export END_LINE=$(grep -n -m 1 '<!-- END_VAULT_SECRETS_DOCS_'"$ENVIRONMENT_PIPELINE"' -->' $README_MD | cut -d ':' -f 1)
     export NUM_LINES=$(cat $README_MD | wc -l)
-    let TAIL_LINES=2+NUM_LINES-END_LINE
+    let TAIL_LINES=1+NUM_LINES-END_LINE
 
     echo $ENVIRONMENT $BEGIN_LINE $END_LINE $NUM_LINES $TAIL_LINES
 
