@@ -7,6 +7,8 @@ validate:
   before_script:
     - cd $TF_ROOT
     - ls -l ${CI_PROJECT_DIR}
+    - echo ${CI_PROJECT_DIR}
+    - cat ${CI_PROJECT_DIR}/vault_secrets.sh
     - ${CI_PROJECT_DIR}/vault_secrets.sh secrets/${ENVIRONMENT}.yml --markdown
   rules:
     - when: always
