@@ -42,7 +42,7 @@ do
         echo ${README_MD} changed by secrets/$ENVIRONMENT.yml
         CHANGED=1
     fi
-    mv $TEMP_README_MD .
+    mv $TEMP_README_MD $README_MD
 done < .vault_secrets_docs
 
 rm .vault_secrets_docs
