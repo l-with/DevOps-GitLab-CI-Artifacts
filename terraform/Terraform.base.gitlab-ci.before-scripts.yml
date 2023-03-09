@@ -1,6 +1,7 @@
 .before_script_secrets_vars: 
   before_script:
-    - cd $TF_ROOT
+    - cd ${TF_ROOT}
+    - echo ${ENVIRONMENT}
     - $CI_PROJECT_DIR/vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
     - >
       if [ -f "$CI_PROJECT_DIR/environment/default.env" ]; then
