@@ -18,6 +18,24 @@ The template is based on `terraform/Terraform.base.gitlab-ci.yml` and includes t
 - ['/terraform/Terraform.gitlab-ci.job-deploy.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.job-deploy.yml)
 - ['/terraform/Terraform.gitlab-ci.job-destroy.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.job-destroy.yml)
 
+The `destroy` job depends only on `validate` to facilitate executing `destroy` manually. If you want `destroy` to depend on `deploy` use:
+
+```yaml
+include:
+  - project: 'packages-and-registries/devops-ci-artifacts'
+    file:    '/terraform/Terraform.gitlab-ci.yml'
+
+image:
+  name: lwith/gitlab-devops:latest
+
+destroy:
+  extends:
+    - .deploy
+  needs:
+    - !reference [.deploy, needs ]
+    - deploy
+```
+
 The simplest usage is
 
 ```yaml
