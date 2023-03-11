@@ -7,6 +7,8 @@ export SUB_PIPELINE=$2
 
 CHANGED=0
 
+if [ -n "$(tail -c 1 $README_MD)" ]; then echo >> $README_MD; fi
+
 grep '<!-- BEGIN_VAULT_SECRETS_DOCS_' $README_MD | sed -r 's/.*BEGIN_VAULT_SECRETS_DOCS_//' | cut -d " " -f 1 >.vault_secrets_docs
 echo found the folowing secrets environments in $README_MD: $(cat .vault_secrets_docs)
 while read line
