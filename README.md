@@ -18,11 +18,6 @@ The template is based on `terraform/Terraform.base.gitlab-ci.yml` and includes t
 - ['/terraform/Terraform.gitlab-ci.job-deploy.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.job-deploy.yml)
 - ['/terraform/Terraform.gitlab-ci.job-destroy.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.job-destroy.yml)
 
-The CI yaml
-
-- ['/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the deploy and destroy job
-- ['/terraform/Terraform.gitlab-ci.fmt-validate.yml'](https://gitlab.with.de/packages-and-registries/devops-ci-artifacts/-/blob/main/terraform/Terraform.gitlab-ci.fmt-validate-build.yml) includes everything but the build, deploy and destroy job
-
 The simplest usage is
 
 ```yaml
@@ -39,11 +34,7 @@ A CI with extra before scripts in the deploy job is the following
 ```yaml
 include:
   - project: 'packages-and-registries/devops-ci-artifacts'
-    file:
-    - '/terraform/Terraform.base.gitlab-ci.before-scripts.yml'
-    - '/terraform/Terraform.gitlab-ci.fmt-validate-build.yml'
-    - '/terraform/Terraform.base.gitlab-ci.job-deploy-without-before-script.yml'
-    - '/terraform/Terraform.gitlab-ci.job-destroy.yml'
+    file:    '/terraform/Terraform.gitlab-ci.yml'
 
 image:
   name: lwith/gitlab-devops:latest
