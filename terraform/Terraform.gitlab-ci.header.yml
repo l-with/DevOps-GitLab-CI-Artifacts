@@ -2,7 +2,7 @@ include:
   - '/terraform/Terraform.base.gitlab-ci.yml'
 
 variables:
-  ENVIRONMENT:        CI_COMMIT_BRANCH
+  ENVIRONMENT:        $CI_COMMIT_BRANCH
   TF_STATE_NAME:      $ENVIRONMENT
   TF_ROOT:            ${CI_PROJECT_DIR}
   TF_VAR_api_v4_url:  $CI_API_V4_URL
