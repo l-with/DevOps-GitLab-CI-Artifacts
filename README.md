@@ -35,7 +35,7 @@ destroy:
     - !reference [.deploy, needs ]
     - deploy
   dependencies:
-    - !reference [.deploy, depends_on]
+    - !reference [.deploy, dependencies]
     - build
 ```
 
