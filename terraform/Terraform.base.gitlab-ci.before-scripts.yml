@@ -29,7 +29,7 @@
 
 .before_script_vault_token:
   before_script:
-  - . ${CI_PROJECT_DIR}/vault_token.sh ${VAULT_TOKEN_ROLE}
+  - source ${CI_PROJECT_DIR}/vault_token.sh ${VAULT_TOKEN_ROLE}
 
 .before_script_ssh_prepare_id: 
   before_script:
@@ -49,7 +49,7 @@
   before_script:
   - export _VAULT_SSH_SIGNER_PATH=${VAULT_SSH_SIGNER_PATH:-ssh-client-signer/sign/ssh-client-signer-gitlab}
   - export _VAULT_SSH_SIGNER_PRINCIPALS=${VAULT_SSH_SIGNER_PRINCIPALS:-root}
-  - . $CI_PROJECT_DIR/vault_token.sh $VAULT_SSH_SIGN_ROLE
+  - source $CI_PROJECT_DIR/vault_token.sh $VAULT_SSH_SIGN_ROLE
   - export SSH_KEY_CERT="$(vault write -field=signed_key ${_VAULT_SSH_SIGNER_PATH} valid_principals="$_VAULT_SSH_SIGNER_PRINCIPALS" public_key=@./id.pub)"
   - echo "$SSH_KEY_CERT" | tr -d '\r' > id-cert.pub
 
