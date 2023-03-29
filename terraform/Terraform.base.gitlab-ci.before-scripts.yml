@@ -60,7 +60,7 @@
   - chmod 700 ~/.ssh
   - ssh-add id
   # - ssh-keyscan $CI_SERVER_HOST >> ~/.ssh/known_hosts # no route to host
-  - chmod 644 ~/.ssh/known_hosts
+  # - chmod 644 ~/.ssh/known_hosts # No such file or directory
 
 .before_script_ssh_agent_add_id_passphrase: 
   before_script:
