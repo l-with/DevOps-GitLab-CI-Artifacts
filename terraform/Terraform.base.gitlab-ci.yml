@@ -20,6 +20,8 @@ stages:
 
 .validate:
   extends: .terraform:validate
+  before_script:
+    - !reference [.before_script_secrets_vars, before_script]
   rules:
     - when: always
 
