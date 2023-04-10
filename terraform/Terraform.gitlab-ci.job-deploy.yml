@@ -10,10 +10,6 @@ deploy:
     - build
   before_script:
     - !reference [.before_script_secrets_vars, before_script]
-  environment:
-    name:         $ENVIRONMENT
-    auto_stop_in: $AUTO_STOP_IN
-    on_stop:      destroy
   rules:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
       when: on_success
