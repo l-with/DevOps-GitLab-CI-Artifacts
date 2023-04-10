@@ -37,7 +37,7 @@ stages:
   rules:
     - when: on_success
 
-.deploy:
+.deploy_without_environment:
   extends: .terraform:deploy
   needs:
     - vault_tools_sh
@@ -45,15 +45,18 @@ stages:
   dependencies:
     - vault_tools_sh
     - build
-  environment:
-    name:         $ENVIRONMENT
-    auto_stop_in: $AUTO_STOP_IN
-    on_stop:      destroy
   before_script:
     - !reference [.before_script_secrets_vars, before_script]
   rules:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
       when: on_success
+
+.deploy:
+  extends: .deploy_without_environment
+  environment:
+    name:         $ENVIRONMENT
+    auto_stop_in: $AUTO_STOP_IN
+    on_stop:      destroy
 
 .destroy:
   extends: .terraform:destroy
