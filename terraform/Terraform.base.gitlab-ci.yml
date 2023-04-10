@@ -58,18 +58,21 @@ stages:
     auto_stop_in: $AUTO_STOP_IN
     on_stop:      destroy
 
-.destroy:
+.destroy_without_environment:
   extends: .terraform:destroy
   needs:
     - vault_tools_sh
     - validate
   dependencies:
     - vault_tools_sh
-  environment:
-    name:   $ENVIRONMENT
-    action: stop
   before_script:
     - !reference [.before_script_secrets_vars, before_script]
   rules:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
       when: manual
+
+.destroy:
+  extends: .destroy_without_environment
+  environment:
+    name:   $ENVIRONMENT
+    action: stop
