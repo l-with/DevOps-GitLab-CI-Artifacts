@@ -9,7 +9,7 @@ cat $1 |\
       (to_entries | map(select(.key != "VAULT_AUTH_ROLE")) | .[] 
       | .key as $path | (.value | to_entries) as $kvs
         | ("rm -f .kv", 
-          ($kvs | .[] | .key as $key | .value as $value | "echo '"'"'\($key)=\($value)'"'"' >>.kv")),
+          ($kvs | .[] | .key as $key | .value as $value | "echo '"'"'\($key)='"'"'\($value) >>.kv")),
           "jc --kv <.kv >.json",
           "rm .kv",
           "vault kv put \($path) @.json",
