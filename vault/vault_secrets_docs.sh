@@ -32,7 +32,7 @@ do
 
     echo $ENVIRONMENT $BEGIN_LINE $END_LINE $NUM_LINES $TAIL_LINES
 
-    TEMP_README_MD=$(mktemp -t $README_MD)
+    TEMP_README_MD=$(mktemp -t README_MD.XXXX)
     head --lines=$BEGIN_LINE $README_MD > $TEMP_README_MD
     vault_secrets.sh secrets/$ENVIRONMENT.yml --markdown >> $TEMP_README_MD
     tail --lines=$TAIL_LINES $README_MD >> $TEMP_README_MD
