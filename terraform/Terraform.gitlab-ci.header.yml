@@ -2,15 +2,17 @@ include:
   - '/terraform/Terraform.base.gitlab-ci.yml'
 
 variables:
-  ENVIRONMENT:        $CI_COMMIT_BRANCH
-  TF_STATE_NAME:      $ENVIRONMENT
-  TF_ROOT:            ${CI_PROJECT_DIR}
-  TF_VAR_api_v4_url:  $CI_API_V4_URL
-  TF_VAR_project_id:  $CI_PROJECT_ID
-  ANSIBLE_PATH:       ${CI_PROJECT_DIR}/ansible
-  ANSIBLE_CONFIG:     ${CI_PROJECT_DIR}/ansible/ansible.cfg
-  ANSIBLE_ROLES_PATH: ${CI_PROJECT_DIR}/ansible/.ansible_roles
-  JUNIT_OUTPUT_DIR:    ${CI_PROJECT_DIR}/ansible/.ansible_junit
+  ENVIRONMENT:           ${CI_COMMIT_BRANCH}
+  TF_STATE_NAME:         ${ENVIRONMENT}
+  TF_ROOT:               ${CI_PROJECT_DIR}
+  TF_VAR_api_v4_url:     ${CI_API_V4_URL}
+  TF_VAR_project_id:     ${CI_PROJECT_ID}
+  TF_VAR_ci_project_dir: ${CI_PROJECT_DIR}
+  TF_VAR_tf_root:        ${TF_ROOT}
+  ANSIBLE_PATH:          ${CI_PROJECT_DIR}/ansible
+  ANSIBLE_CONFIG:        ${CI_PROJECT_DIR}/ansible/ansible.cfg
+  ANSIBLE_ROLES_PATH:    ${CI_PROJECT_DIR}/ansible/.ansible_roles
+  JUNIT_OUTPUT_DIR:      ${CI_PROJECT_DIR}/ansible/.ansible_junit
 
 workflow:
   rules:
