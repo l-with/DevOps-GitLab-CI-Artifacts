@@ -20,7 +20,7 @@ do
 
     echo $ENVIRONMENT $BEGIN_LINE $END_LINE $NUM_LINES $TAIL_LINES
 
-    TEMP_README_MD=$(mktemp -t $README_MD).md
+    TEMP_README_MD=$(mktemp -t README_MD.XXXX)
     head --lines=$BEGIN_LINE $README_MD > $TEMP_README_MD
 
     echo "| variable | value | comment |" >> $TEMP_README_MD
