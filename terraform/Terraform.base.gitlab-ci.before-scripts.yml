@@ -23,7 +23,7 @@
   before_script:
     - download-secure-files
     - >
-      for env_file in .secret_files/*.env; do 
+      for env_file in .secure_files/*.env; do 
         set -a && source $env_file && set +a
       done
 
