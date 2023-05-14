@@ -37,6 +37,7 @@
   - cd $TF_ROOT
   - cp -p .secure_files/id .
   - cp -p .secure_files/id.pub .
+  - chmod g-rwx,o-rwx id
 
 .before_script_ssh_prepare_id:
   before_script:
