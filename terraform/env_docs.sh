@@ -25,12 +25,13 @@ do
 
     echo "| variable | value | comment |" >> $TEMP_README_MD
     echo "| --- | --- | --- |" >> $TEMP_README_MD
-    echo "var","value"#"comment" |\
+    echo '"var";"value";"comment"' |\
         cat - environment/${ENVIRONMENT}.env |\
-        tr '=' ',' |\
+        sed -n "H;g;/^[^']*'[^']*\('[^']*'[^']*\)*$/d; s/^\n//; s/\n/<br>/g; p; s/.*//; h" |\
+        tr '=' ';' |\
         sed -E 's/ +# +/#/' |\
         sed -E 's/^([^#]*)$/\1#/' |\
-        tr '#' ',' |\
+        awk 'BEGIN { FS = "" } { output = ""; in_quotes = 0; for (i=1; i<=NF; i++) { if ($i == "\"" && i>1 && $(i-1) != "\\") in_quotes = !in_quotes; if ($i == "#" && !in_quotes) $i = ";"; output = output $i; } print output }' |\
         jc --csv -p |\
         jq '
         .[] | ("| \(.var) | \(.value) | \(.comment) |")
