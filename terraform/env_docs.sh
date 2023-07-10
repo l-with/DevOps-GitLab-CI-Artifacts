@@ -27,7 +27,7 @@ do
     echo "| --- | --- | --- |" >> $TEMP_README_MD
     echo '"var";"value";"comment"' |\
         cat - environment/${ENVIRONMENT}.env |\
-        sed -n "H;g;/^[^']*'[^']*\('[^']*'[^']*\)*$/d; s/^\n//; s/\n/<br>/g; p; s/.*//; h" |\
+        sed -n "H;g;/^[^']*'[^']*\('[^']*'[^']*\)*$/d; s/'/<pre>/; s/'/<\/pre>/; s/<pre>/<pre>'/; s/<\/pre>/'<\/pre>/; s/^\n//; s/\n/<br>/g; p; s/.*//; h" |\
         tr '=' ';' |\
         sed -E 's/ +# +/#/' |\
         sed -E 's/^([^#]*)$/\1#/' |\
