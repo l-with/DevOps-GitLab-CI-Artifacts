@@ -80,6 +80,11 @@ stages:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
       when: manual
 
+.destroy_without_environment_stop:
+  extends: .destroy_without_environment
+  environment:
+    name:   $ENVIRONMENT
+
 .destroy:
   extends: .destroy_without_environment
   environment:
