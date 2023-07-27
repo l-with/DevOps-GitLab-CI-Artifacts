@@ -24,6 +24,8 @@ stages:
     - !reference [.before_script_secrets_vars, before_script]
   rules:
     - when: always
+  environment:
+    name: $ENVIRONMENT
 
 .build:
   extends: .terraform:build
@@ -34,6 +36,8 @@ stages:
     - vault_tools_sh
   before_script:
     - !reference [.before_script_secrets_vars, before_script]
+  environment:
+    name: $ENVIRONMENT
   rules:
     - when: on_success
 
@@ -50,6 +54,11 @@ stages:
   rules:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
       when: on_success
+
+.deploy_without_environment_stop:
+  extends: .deploy_without_environment
+  environment:
+    name: $ENVIRONMENT
 
 .deploy:
   extends: .deploy_without_environment
