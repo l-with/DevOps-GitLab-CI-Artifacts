@@ -12,6 +12,7 @@
       fi
     - >
       if [ -f "$CI_PROJECT_DIR/environment/default.env" ]; then
+        set -a && cat $CI_PROJECT_DIR/environment/default.env | envsubst | grep --invert-match '=$'
         set -a && cat $CI_PROJECT_DIR/environment/default.env | envsubst | grep --invert-match '=$' | source /dev/stdin && set +a
       fi
     - >
