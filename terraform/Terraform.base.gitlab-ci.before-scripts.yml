@@ -12,11 +12,11 @@
       fi
     - >
       if [ -f "$CI_PROJECT_DIR/environment/default.env" ]; then
-        set -a && cat $CI_PROJECT_DIR/environment/default.env | envsubst | grep --invert-match '=$' >.env && cat .env && . .env && rm .env && set +a
+        set -a && cat $CI_PROJECT_DIR/environment/default.env | envsubst | grep --invert-match --extended-regexp --regexp "=(''|\"\"){0,1}$" --regexp "=(''|\"\"){0,1}\s*#.*$" >.env && cat .env && . .env && rm .env && set +a
       fi
     - >
       if [ -f "$CI_PROJECT_DIR/environment/${ENVIRONMENT}.env" ]; then
-        set -a && cat $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env | envsubst | grep --invert-match '=$' >.env && cat .env && . .env && rm .env && set +a
+        set -a && cat $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env | envsubst | egrep --invert-match --extended-regexp --regexp "=(''|\"\"){0,1}$" --regexp "=(''|\"\"){0,1}\s*#.*$"  >.env && cat .env && . .env && rm .env && set +a
       fi
 
 .before_script_secure_files:
