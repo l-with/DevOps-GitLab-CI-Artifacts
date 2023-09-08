@@ -41,7 +41,6 @@
   before_script:
   - cd $TF_ROOT
   - export _ID=${ID:-id}
-  - echo _ID ${_ID}
   - cp -p .secure_files/${_ID} .
   - cp -p .secure_files/${_ID}.pub .
   - chmod g-rwx,o-rwx ${_ID}
