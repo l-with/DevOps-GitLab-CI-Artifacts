@@ -40,31 +40,36 @@
 .before_script_ssh_move_secure_file_id:
   before_script:
   - cd $TF_ROOT
-  - cp -p .secure_files/id .
-  - cp -p .secure_files/id.pub .
-  - chmod g-rwx,o-rwx id
+  - export _ID=${ID:-id}
+  - cp -p .secure_files/${_ID} .
+  - cp -p .secure_files/${_ID}.pub .
+  - chmod g-rwx,o-rwx ${ID}
 
 .before_script_ssh_prepare_id:
   before_script:
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > id
-  - chmod g-rwx,o-rwx id
+  - export _ID=${ID:-id}
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ${_ID}
+  - chmod g-rwx,o-rwx ${_ID}
 
 .before_script_ssh_prepare_id_pub: 
   before_script:
-  - echo "$SSH_PUBLIC_KEY" | tr -d '\r' > id.pub
+  - export _ID=${ID:-id}
+  - echo "$SSH_PUBLIC_KEY" | tr -d '\r' > ${_ID}.pub
 
 .before_script_ssh_generate_id: 
   before_script:
-  - ssh-keygen -t ed25519 -N '' -f id >/dev/null 2>&1  
-  - chmod g-rwx,o-rwx id
+  - export _ID=${ID:-id}
+  - ssh-keygen -t ed25519 -N '' -f ${_ID} >/dev/null 2>&1  
+  - chmod g-rwx,o-rwx ${_ID}
 
 .before_script_ssh_sign_id: 
   before_script:
+  - export _ID=${ID:-id}
   - export _VAULT_SSH_SIGNER_PATH=${VAULT_SSH_SIGNER_PATH:-ssh-client-signer/sign/ssh-client-signer-gitlab}
   - export _VAULT_SSH_SIGNER_PRINCIPALS=${VAULT_SSH_SIGNER_PRINCIPALS:-root}
   - source $CI_PROJECT_DIR/vault_token.sh $VAULT_SSH_SIGN_ROLE
-  - export SSH_KEY_CERT="$(vault write -field=signed_key ${_VAULT_SSH_SIGNER_PATH} valid_principals="${_VAULT_SSH_SIGNER_PRINCIPALS}" public_key=@./id.pub)"
-  - echo "$SSH_KEY_CERT" | tr -d '\r' > id-cert.pub
+  - export SSH_KEY_CERT="$(vault write -field=signed_key ${_VAULT_SSH_SIGNER_PATH} valid_principals="${_VAULT_SSH_SIGNER_PRINCIPALS}" public_key=@./${_ID}.pub)"
+  - echo "$SSH_KEY_CERT" | tr -d '\r' > ${_ID}-cert.pub
 
 .before_script_ssh_agent_add_id: 
   before_script:
@@ -75,11 +80,12 @@
 
 .before_script_ssh_agent_add_id_passphrase: 
   before_script:
+  - export _ID=${ID:-id}
   - eval $(ssh-agent -s)
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
   - |
-    { sleep .1; echo $SSH_PASSPHRASE; } | script -q /dev/null -c 'ssh-add id'
+    { sleep .1; echo $SSH_PASSPHRASE; } | script -q /dev/null -c 'ssh-add ${_ID}'
   - ssh-keyscan $CI_SERVER_HOST >> ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
 
