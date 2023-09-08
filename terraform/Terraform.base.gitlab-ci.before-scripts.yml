@@ -74,10 +74,11 @@
 
 .before_script_ssh_agent_add_id: 
   before_script:
+  - export _ID=${ID:-id}
   - eval $(ssh-agent -s)
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
-  - ssh-add id
+  - ssh-add ${_ID}
 
 .before_script_ssh_agent_add_id_passphrase: 
   before_script:
