@@ -15,6 +15,11 @@ stages:
 
 .fmt:
   extends: .terraform:fmt
+  before_script:
+    - echo CI_PIPELINE_SOURCE $CI_PIPELINE_SOURCE
+    - echo CI_COMMIT_TAG $CI_COMMIT_TAG
+    - echo CI_COMMIT_BRANCH $CI_COMMIT_BRANCH
+    - echo CI_COMMIT_REF_NAME $CI_COMMIT_REF_NAME
   rules:
     - when: always
 
