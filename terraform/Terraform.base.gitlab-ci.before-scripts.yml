@@ -30,7 +30,7 @@
     - download-secure-files
     - >
       for env_file in .secure_files/*.env; do 
-        set -a && cat $env_file && source $env_file && set +a
+        set -a && source $env_file && set +a
       done
 
 .before_script_vault_token:
