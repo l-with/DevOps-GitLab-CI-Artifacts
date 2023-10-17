@@ -85,6 +85,7 @@
     <h1>{{- escapeXML ( index . 0 ).Target }} - Trivy Report - {{ now }}</h1>
     <table>
     {{- range . }}
+      {{- $target := .Target }}
       <tr class="group-header"><th colspan="6">{{ .Type | toString | escapeXML }}</th></tr>
       {{- if (eq (len .Vulnerabilities) 0) }}
       <tr><th colspan="6">No Vulnerabilities found</th></tr>
