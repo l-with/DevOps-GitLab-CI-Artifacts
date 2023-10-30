@@ -1,5 +1,5 @@
 include:
-  - '/terraform/Terraform.base.gitlab-ci.yml'
+  - '/terraform/Terraform.latest.base.gitlab-ci.yml'
 
 variables:
   ENVIRONMENT:           ${CI_COMMIT_BRANCH}
