@@ -5,4 +5,4 @@ include:
   - '/terraform/Terraform.latest.gitlab-ci.job-validate.yml'
   - '/terraform/Terraform.latest.gitlab-ci.job-build.yml'
   - '/terraform/Terraform.latest.gitlab-ci.job-deploy.yml'
-  - '/terraform/Terraform.gitlab-ci.job-destroy.yml'
+  - '/terraform/Terraform.latest.gitlab-ci.job-destroy.yml'
