@@ -1,0 +1,13 @@
+
+deploy: 
+  extends:
+    - .deploy
+  needs:
+    - build
+  dependencies:
+    - build
+  before_script:
+    - !reference [.before_script_secrets_vars, before_script]
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      when: on_success

@@ -1,0 +1,8 @@
+include:
+  - '/terraform/Terraform.latest.base.gitlab-ci.yml'
+  - '/terraform/Terraform.latest.gitlab-ci.header.yml'
+  - '/terraform/Terraform.latest.gitlab-ci.job-fmt.yml'
+  - '/terraform/Terraform.latest.gitlab-ci.job-validate.yml'
+  - '/terraform/Terraform.latest.gitlab-ci.job-build.yml'
+  - '/terraform/Terraform.latest.gitlab-ci.job-deploy.yml'
+  - '/terraform/Terraform.gitlab-ci.job-destroy.yml'

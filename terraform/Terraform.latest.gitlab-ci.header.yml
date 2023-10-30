@@ -1,0 +1,38 @@
+include:
+  - '/terraform/Terraform.base.gitlab-ci.yml'
+
+variables:
+  ENVIRONMENT:           ${CI_COMMIT_BRANCH}
+  TF_STATE_NAME:         ${ENVIRONMENT}
+  TF_ROOT:               ${CI_PROJECT_DIR}
+  TF_VAR_api_v4_url:     ${CI_API_V4_URL}
+  TF_VAR_project_id:     ${CI_PROJECT_ID}
+  TF_VAR_ci_api_v4_url:  ${CI_API_V4_URL}
+  TF_VAR_ci_project_id:  ${CI_PROJECT_ID}
+  TF_VAR_ci_project_dir: ${CI_PROJECT_DIR}
+  TF_VAR_ci_server_url:  ${CI_SERVER_URL}
+  TF_VAR_ci_job_jwt:     ${CI_JOB_JWT}
+  TF_VAR_environment:    ${ENVIRONMENT}
+  TF_VAR_tf_root:        ${TF_ROOT}
+  ANSIBLE_PATH:          ${CI_PROJECT_DIR}/ansible
+  ANSIBLE_CONFIG:        ${CI_PROJECT_DIR}/ansible/ansible.cfg
+  ANSIBLE_ROLES_PATH:    ${CI_PROJECT_DIR}/ansible/.ansible_roles
+  JUNIT_OUTPUT_DIR:      ${CI_PROJECT_DIR}/ansible/.ansible_junit
+
+workflow:
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    when: never
+  - if: $CI_COMMIT_REF_PROTECTED != "true"
+    variables:
+      ENVIRONMENT:  feature
+      AUTO_STOP_IN: "15 minutes"
+  - when: always
+    variables:
+      AUTO_STOP_IN: "never"
+
+default:
+  cache:
+    - key: ${CI_PROJECT_NAME}__${TF_ROOT}__${CI_COMMIT_BRANCH}
+      paths:
+        - $TF_ROOT/.terraform/

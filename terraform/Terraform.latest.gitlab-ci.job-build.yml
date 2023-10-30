@@ -1,0 +1,7 @@
+build:
+  extends: 
+    - .build
+  needs:
+    - validate
+  rules:
+    - when: on_success

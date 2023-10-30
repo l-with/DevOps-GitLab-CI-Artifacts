@@ -1,0 +1,86 @@
+include:
+  - template: Terraform/Base.latest.gitlab-ci.yml  # https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/ci/templates/Terraform/Base.latest.gitlab-ci.yml
+  - template: Jobs/SAST-IaC.latest.gitlab-ci.yml   # https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/ci/templates/Jobs/SAST-IaC.latest.gitlab-ci.yml
+  - '/terraform/Terraform.latest.base.gitlab-ci.before-scripts.yml'
+
+stages:
+  - init
+  - validate
+  - build
+  - test
+  - deploy
+  - cleanup
+
+.fmt:
+  extends: .terraform:fmt
+  before_script:
+    - echo CI_COMMIT_TAG $CI_COMMIT_TAG
+    - echo CI_COMMIT_BRANCH $CI_COMMIT_BRANCH
+    - echo CI_COMMIT_REF_NAME $CI_COMMIT_REF_NAME
+  rules:
+    - when: always
+
+.validate:
+  extends: .terraform:validate
+  before_script:
+    - !reference [.before_script_secrets_vars, before_script]
+  rules:
+    - when: always
+  environment:
+    name: $ENVIRONMENT
+
+.build:
+  extends: .terraform:build
+  needs:
+    - validate
+  before_script:
+    - !reference [.before_script_secrets_vars, before_script]
+  environment:
+    name: $ENVIRONMENT
+  rules:
+    - when: on_success
+
+.deploy_without_environment:
+  extends: .terraform:deploy
+  needs:
+    - build
+  dependencies:
+    - build
+  before_script:
+    - !reference [.before_script_secrets_vars, before_script]
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      when: on_success
+
+.deploy_without_environment_stop:
+  extends: .deploy_without_environment
+  environment:
+    name: $ENVIRONMENT
+
+.deploy:
+  extends: .deploy_without_environment
+  environment:
+    name:         $ENVIRONMENT
+    auto_stop_in: $AUTO_STOP_IN
+    on_stop:      destroy
+
+.destroy_without_environment:
+  extends: .terraform:destroy
+  needs:
+    - validate
+  before_script:
+    - !reference [.before_script_secrets_vars, before_script]
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      when: manual
+
+.destroy_without_environment_stop:
+  extends: .destroy_without_environment
+  environment:
+    name:   $ENVIRONMENT
+
+.destroy:
+  extends: .destroy_without_environment
+  environment:
+    name:   $ENVIRONMENT
+    action: stop
