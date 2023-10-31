@@ -28,3 +28,23 @@
     - !reference [.before_script_install_vault_kv_puts, before_script]
     - !reference [.before_script_install_vault_kv2_patches, before_script]
     - !reference [.before_script_install_vault_token, before_script]
+
+.before_script_vault_secrets_and_environments: 
+  before_script:
+    - echo ${ENVIRONMENT}
+    - >
+      if [ -f "secrets/default.yml" ]; then
+        vault_secrets.sh secrets/default.yml >.secrets && . .secrets && rm .secrets
+      fi
+    - >
+      if [ -f "secrets/${ENVIRONMENT}.yml" ]; then
+        vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
+      fi
+    - >
+      if [ -f "$CI_PROJECT_DIR/environment/default.env" ]; then
+        set -a && cat $CI_PROJECT_DIR/environment/default.env | envsubst | grep --invert-match --extended-regexp --regexp "=(''|\"\"){0,1}$" --regexp "=(''|\"\"){0,1}\s*#.*$" >.env && cat .env && . .env && rm .env && set +a
+      fi
+    - >
+      if [ -f "$CI_PROJECT_DIR/environment/${ENVIRONMENT}.env" ]; then
+        set -a && cat $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env | envsubst | egrep --invert-match --extended-regexp --regexp "=(''|\"\"){0,1}$" --regexp "=(''|\"\"){0,1}\s*#.*$"  >.env && cat .env && . .env && rm .env && set +a
+      fi
