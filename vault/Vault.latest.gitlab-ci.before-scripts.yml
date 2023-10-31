@@ -1,0 +1,30 @@
+.before_script_install_vault_secrets: 
+  before_script:
+    - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/devops-ci-artifacts/-/raw/main/vault/vault_secrets.sh
+    - chmod +x vault_secrets.sh
+    - mv vault_secrets.sh /usr/local/bin
+
+.before_script_install_vault_kv_puts: 
+  before_script:
+    - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/devops-ci-artifacts/-/raw/main/vault/vault_kv_puts.sh
+    - chmod +x vault_kv_puts.sh
+    - mv vault_kv_puts.sh /usr/local/bin
+
+.before_script_install_vault_kv2_patches: 
+  before_script:
+    - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/devops-ci-artifacts/-/raw/main/vault/vault_kv2_patches.sh
+    - chmod +x vault_kv2_patches.sh
+    - mv vault_kv2_patches.sh /usr/local/bin
+
+.before_script_install_vault_token: 
+  before_script:
+    - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/devops-ci-artifacts/-/raw/main/vault/vault_token.sh
+    - chmod +x vault_token.sh
+    - mv vault_token.sh /usr/local/bin
+
+.before_script_install_vault_tools: 
+  before_script:
+    - !reference [.before_script_install_vault_secrets, before_script]
+    - !reference [.before_script_install_vault_kv_puts, before_script]
+    - !reference [.before_script_install_vault_kv2_patches, before_script]
+    - !reference [.before_script_install_vault_token, before_script]
