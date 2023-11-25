@@ -1,6 +1,7 @@
 .before_script_secrets_vars: 
   before_script:
     - cd ${TF_ROOT}
+    - pwd
     - echo ${ENVIRONMENT}
     - >
       if [ -f "secrets/default.yml" ]; then
