@@ -19,6 +19,11 @@
       if [ -f "$CI_PROJECT_DIR/environment/${ENVIRONMENT}.env" ]; then
         set -a && cat $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env | envsubst | egrep --invert-match --extended-regexp --regexp "=(''|\"\"){0,1}$" --regexp "=(''|\"\"){0,1}\s*#.*$"  >.env && cat .env && . .env && rm .env && set +a
       fi
+    - download-secure-files
+    - >
+      for env_file in .secure_files/*.env; do 
+        set -a && source $env_file && set +a
+      done
 
 .before_script_secure_files:
   before_script:
