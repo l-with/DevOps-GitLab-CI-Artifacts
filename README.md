@@ -4,7 +4,7 @@ GitLab CI templates and snippets
 
 ## terraform
 
-The CI template `terraform/Terraform.gitlab-ci.yml` is based on the [GitLab terraform CI template](https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.latest.gitlab-ci.yml).
+The CI templates `terraform/Terraform.gitlab-ci.yml` is based on the [GitLab terraform CI template](https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.latest.gitlab-ci.yml).
 Following these templates the terraform lock file `.terraform-lock.hcl` is not part of the cache and should be part of the repository.
 
 The template modifies the [GitLab terraform CI template](https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.latest.gitlab-ci.yml) so that the [GitLab flow](https://docs.gitlab.com/ee/topics/gitlab_flow.html#introduction-to-gitlab-flow) can be used (s. example project [GitLab Terraform GitLab Flow](https://gitlab.with.de/try/gitlab-terraform-gitlab-flow)).
