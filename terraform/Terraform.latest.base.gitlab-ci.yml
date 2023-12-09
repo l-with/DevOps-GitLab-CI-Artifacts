@@ -59,6 +59,8 @@ stages:
 
 .deploy:
   extends: .deploy_without_environment
+  before_script:
+    - !reference [.before_script_secrets_vars, before_script]
   environment:
     name:         $ENVIRONMENT
     auto_stop_in: $AUTO_STOP_IN
@@ -76,11 +78,15 @@ stages:
 
 .destroy_without_environment_stop:
   extends: .destroy_without_environment
+  before_script:
+    - !reference [.before_script_secrets_vars, before_script]
   environment:
     name:   $ENVIRONMENT
 
 .destroy:
   extends: .destroy_without_environment
+  before_script:
+    - !reference [.before_script_secrets_vars, before_script]
   environment:
     name:   $ENVIRONMENT
     action: stop
