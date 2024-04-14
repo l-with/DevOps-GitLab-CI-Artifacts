@@ -104,3 +104,4 @@
   - ansible-galaxy role install --role-file $ANSIBLE_PATH/ansible-requirements.yml
   - rm -rf $ANSIBLE_COLLECTIONS_PATH
   - ansible-galaxy collection install --requirements-file $ANSIBLE_PATH/ansible-requirements.yml --timeout $ANSIBLE_GALAXY_TIMEOUT
+  - export LE_CERT_PACKAGE_URL_TEMPLATE="${CI_API_V4_URL}/projects/${LE_PROJECT_ID}/packages/generic/le-certs/42/le_#_le_FQDN_#.zip"
