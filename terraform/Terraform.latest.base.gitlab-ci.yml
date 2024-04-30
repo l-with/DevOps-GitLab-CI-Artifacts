@@ -22,7 +22,7 @@ stages:
     - >
       echo CI_COMMIT_REF_NAME ${CI_COMMIT_REF_NAME}
     - >
-      echo $CI_COMMIT_REF_PROTECTED ${CI_COMMIT_REF_PROTECTED}
+      echo CI_COMMIT_REF_PROTECTED ${CI_COMMIT_REF_PROTECTED}
   rules:
     - when: always
 
