@@ -33,9 +33,9 @@ workflow:
       AUTO_STOP_IN: "never"
 
 default:
-  id_tokens:
-    VAULT_ID_TOKEN:
-      aud: $CI_SERVER_URL
+  #id_tokens:
+  #  VAULT_ID_TOKEN:
+  #    aud: $CI_SERVER_URL
   cache:
     - key: ${CI_PROJECT_NAME}__${TF_ROOT}__${CI_COMMIT_BRANCH}
       paths:
