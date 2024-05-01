@@ -5,7 +5,7 @@ cat $1 |\
   jq '
     .[] 
     | .secrets[] 
-    | ("export VAULT_TOKEN=\"$(vault write -field=token auth/jwt/login role=\(.VAULT_AUTH_ROLE) jwt=$CI_JOB_JWT)\"", 
+    | ("export VAULT_TOKEN=\"$(vault write -field=token auth/jwt/login role=\(.VAULT_AUTH_ROLE) jwt=${CI_JOB_JWT})\"", 
       (to_entries | map(select(.key != "VAULT_AUTH_ROLE")) | .[] | .key as $var | .value 
         | "export " + $var + "=\"$(vault kv get "+ if has("mount") then "-mount=\(.mount) " else "" end + if has("field") then "-field=\(.field) " else "" end + if has("format") then "-format=\(.format) " else "" end + .path +")\""),
       "unset VAULT_TOKEN")
