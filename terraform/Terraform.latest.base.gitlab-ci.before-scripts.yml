@@ -3,10 +3,13 @@
     - >
       if [ "$GITLAB_VAULT_JWT_VERSION" == "2" ]; then
         export VAULT_JWT_SUFFIX=_v2
-      fi 
+      fi
+    - >
+      echo VAULT_JWT_SUFFIX: ${VAULT_JWT_SUFFIX}
     - cd ${TF_ROOT}
     - pwd
-    - echo ${ENVIRONMENT}
+    - >
+      echo ENVIRONMENT: ${ENVIRONMENT}
     - >
       if [ -f "secrets/default.yml" ]; then
         vault_secrets${VAULT_JWT_SUFFIX}.sh secrets/default.yml >.secrets && . .secrets && rm .secrets
