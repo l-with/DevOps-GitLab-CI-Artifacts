@@ -131,6 +131,17 @@ If in a job other artifacts are defined, use
     - vault_tools_sh
 ```
 
+## vault secrets (v2)
+
+The shell script `vault_secrets_v2.sh` uses `VAULT_ID_TOKEN` to authenticate.
+This token must be configured in a CI job e.g. by:
+
+```yaml
+  id_tokens:
+    ID_TOKEN:
+      aud: $CI_SERVER_URL
+```
+
 ## vault secrets
 
 The CI snippet `vault/Vault.secrets.gitlab-ci.yml` (`vault/Vault.gitlab-ci.yml` is deprecated) puts the shell scripts `vault_secrets.sh` into artifacts.
