@@ -1,22 +1,16 @@
 .before_script_secrets_vars: 
   before_script:
-    - >
-      if [ "$GITLAB_VAULT_JWT_VERSION" == "2" ]; then
-        export VAULT_JWT_SUFFIX=_v2
-      fi
-    - >
-      echo VAULT_JWT_SUFFIX: ${VAULT_JWT_SUFFIX}
     - cd ${TF_ROOT}
     - pwd
     - >
       echo ENVIRONMENT: ${ENVIRONMENT}
     - >
       if [ -f "secrets/default.yml" ]; then
-        vault_secrets${VAULT_JWT_SUFFIX}.sh secrets/default.yml --debug >.secrets && . .secrets && rm .secrets
+        vault_secrets.sh secrets/default.yml --debug >.secrets && . .secrets && rm .secrets
       fi
     - >
       if [ -f "secrets/${ENVIRONMENT}.yml" ]; then
-        vault_secrets${VAULT_JWT_SUFFIX}.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
+        vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
       fi
     - >
       if [ -f "$CI_PROJECT_DIR/environment/default.env" ]; then

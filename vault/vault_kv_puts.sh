@@ -5,7 +5,7 @@ cat $1 |\
   jq '
     .[] 
     | .kv_puts[] 
-    | ("export VAULT_TOKEN=\"$(vault write -field=token auth/jwt/login role=\(.VAULT_AUTH_ROLE) jwt=${CI_JOB_JWT})\"", 
+    | ("export VAULT_TOKEN=\"$(vault write -field=token auth/jwt/login role=\(.VAULT_AUTH_ROLE) jwt=${ID_TOKEN_GITLAB})\"", 
       (to_entries | map(select(.key != "VAULT_AUTH_ROLE")) | .[] 
       | .key as $path | (.value | to_entries) as $kvs
         | ("rm -f .kv", 
