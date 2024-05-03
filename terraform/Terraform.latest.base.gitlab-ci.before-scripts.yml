@@ -5,6 +5,9 @@
     - >
       echo ENVIRONMENT: ${ENVIRONMENT}
     - >
+      echo ENVIRONMENT: ${ENVIRONMENT}
+
+    - >
       if [ -f "secrets/default.yml" ]; then
         vault_secrets_v2.sh secrets/default.yml >.secrets && . .secrets && rm .secrets
       fi
