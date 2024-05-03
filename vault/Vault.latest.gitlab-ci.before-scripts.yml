@@ -1,8 +1,8 @@
 .before_script_install_vault_secrets: 
   before_script:
     - curl --remote-name ${CI_SERVER_URL}/packages-and-registries/devops-ci-artifacts/-/raw/id-token/vault/vault_secrets_v2.sh
-    - chmod +x vault_secrets.sh
-    - mv vault_secrets.sh /usr/local/bin
+    - chmod +x vault_secrets_v2.sh
+    - mv vault_secrets_v2.sh /usr/local/bin
 
 .before_script_install_vault_kv_puts: 
   before_script:
