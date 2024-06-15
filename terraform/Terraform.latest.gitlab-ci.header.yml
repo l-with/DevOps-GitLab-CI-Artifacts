@@ -15,6 +15,7 @@ variables:
   TF_VAR_ci_project_name:         ${CI_PROJECT_NAME}
   TF_VAR_ci_project_id:           ${CI_PROJECT_ID}
   TF_VAR_ci_project_dir:          ${CI_PROJECT_DIR}
+  TF_VAR_ci_project_path:         ${CI_PROJECT_PATH}
   TF_VAR_ci_server_url:           ${CI_SERVER_URL}
   TF_VAR_ci_job_token:            ${CI_JOB_TOKEN}
   TF_VAR_environment:             ${ENVIRONMENT}
