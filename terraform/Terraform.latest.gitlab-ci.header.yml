@@ -7,6 +7,8 @@ variables:
   TF_ROOT:                        ${CI_PROJECT_DIR}
   TF_VAR_api_v4_url:              ${CI_API_V4_URL}
   TF_VAR_project_id:              ${CI_PROJECT_ID}
+  TF_VAR_ci_server_name:          ${CI_SERVER_NAME}
+  TF_VAR_ci_server_host:          ${CI_SERVER_HOST}
   TF_VAR_ci_api_v4_url:           ${CI_API_V4_URL}
   TF_VAR_ci_project_namespace:    ${CI_PROJECT_NAMESPACE}
   TF_VAR_ci_project_namespace_id: ${CI_PROJECT_NAMESPACE_ID}
