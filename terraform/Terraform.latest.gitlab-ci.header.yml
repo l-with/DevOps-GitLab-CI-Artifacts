@@ -2,22 +2,25 @@ include:
   - '/terraform/Terraform.latest.base.gitlab-ci.yml'
 
 variables:
-  ENVIRONMENT:              ${CI_COMMIT_BRANCH}
-  TF_STATE_NAME:            ${ENVIRONMENT}
-  TF_ROOT:                  ${CI_PROJECT_DIR}
-  TF_VAR_api_v4_url:        ${CI_API_V4_URL}
-  TF_VAR_project_id:        ${CI_PROJECT_ID}
-  TF_VAR_ci_api_v4_url:     ${CI_API_V4_URL}
-  TF_VAR_ci_project_id:     ${CI_PROJECT_ID}
-  TF_VAR_ci_project_dir:    ${CI_PROJECT_DIR}
-  TF_VAR_ci_server_url:     ${CI_SERVER_URL}
-  TF_VAR_ci_job_token:      ${CI_JOB_TOKEN}
-  TF_VAR_environment:       ${ENVIRONMENT}
-  TF_VAR_tf_root:           ${TF_ROOT}
-  ANSIBLE_PATH:             ${CI_PROJECT_DIR}/ansible
-  ANSIBLE_CONFIG:           ${CI_PROJECT_DIR}/ansible/ansible.cfg
-  ANSIBLE_ROLES_PATH:       ${CI_PROJECT_DIR}/ansible/.ansible_roles
-  JUNIT_OUTPUT_DIR:         ${CI_PROJECT_DIR}/ansible/.ansible_junit
+  ENVIRONMENT:                    ${CI_COMMIT_BRANCH}
+  TF_STATE_NAME:                  ${ENVIRONMENT}
+  TF_ROOT:                        ${CI_PROJECT_DIR}
+  TF_VAR_api_v4_url:              ${CI_API_V4_URL}
+  TF_VAR_project_id:              ${CI_PROJECT_ID}
+  TF_VAR_ci_api_v4_url:           ${CI_API_V4_URL}
+  TF_VAR_ci_project_namespace:    ${CI_PROJECT_NAMESPACE}
+  TF_VAR_ci_project_namespace_id: ${CI_PROJECT_NAMESPACE_ID}
+  TF_VAR_ci_project_name:         ${CI_PROJECT_NAME}
+  TF_VAR_ci_project_id:           ${CI_PROJECT_ID}
+  TF_VAR_ci_project_dir:          ${CI_PROJECT_DIR}
+  TF_VAR_ci_server_url:           ${CI_SERVER_URL}
+  TF_VAR_ci_job_token:            ${CI_JOB_TOKEN}
+  TF_VAR_environment:             ${ENVIRONMENT}
+  TF_VAR_tf_root:                 ${TF_ROOT}
+  ANSIBLE_PATH:                   ${CI_PROJECT_DIR}/ansible
+  ANSIBLE_CONFIG:                 ${CI_PROJECT_DIR}/ansible/ansible.cfg
+  ANSIBLE_ROLES_PATH:             ${CI_PROJECT_DIR}/ansible/.ansible_roles
+  JUNIT_OUTPUT_DIR:               ${CI_PROJECT_DIR}/ansible/.ansible_junit
 
 workflow:
   rules:
