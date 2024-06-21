@@ -84,6 +84,9 @@ The most often important ones are described here.
   - `default.env` if the file  it exists
   - `${ENVIRONMENT}.env` if the file exists
 
+All files are passed through [envsubst](https://linuxhandbook.com/envsubst-command/) before they are processed.
+If the differences between the environments can be expressed through environment variables, it is possible to use only the default.*-files.
+
 ### before_script_secrets_env_files
 
 - downloads the secure files
