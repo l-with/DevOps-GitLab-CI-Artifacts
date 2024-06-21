@@ -10,7 +10,7 @@
       fi
     - >
       if [ -f "secrets/${ENVIRONMENT}.yml" ]; then
-        vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
+        cat secrets/${ENVIRONMENT}.yml | envsubst > secrets/.${ENVIRONMENT}.yml && vault_secrets.sh secrets/.${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets && rm secrets/.${ENVIRONMENT}.yml
       fi
     - >
       if [ -f "$CI_PROJECT_DIR/environment/default.env" ]; then
