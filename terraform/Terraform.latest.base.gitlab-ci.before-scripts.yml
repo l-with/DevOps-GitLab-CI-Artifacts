@@ -16,13 +16,14 @@
       fi
     - >
       if [ -f "$CI_PROJECT_DIR/environment/default.env" ]; then
-        echo source $CI_PROJECT_DIR/environment/default.env
-        set -a && source $CI_PROJECT_DIR/environment/default.env && set +a
+        echo ... $CI_PROJECT_DIR/environment/default.env ...
+        set -a && cat $CI_PROJECT_DIR/environment/default.env | envsubst | grep --invert-match --extended-regexp --regexp "=(''|\"\"){0,1}$" --regexp "=(''|\"\"){0,1}\s*#.*$" >.env && cat .env && . .env && rm .env && set +a
+
       fi
     - >
       if [ -f "$CI_PROJECT_DIR/environment/${ENVIRONMENT}.env" ]; then
-        echo source $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env
-        set -a && source $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env && set +a
+        echo ... $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env ...
+        set -a && cat $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env | envsubst | egrep --invert-match --extended-regexp --regexp "=(''|\"\"){0,1}$" --regexp "=(''|\"\"){0,1}\s*#.*$"  >.env && cat .env && . .env && rm .env && set +a
       fi
     - download-secure-files
     - >
