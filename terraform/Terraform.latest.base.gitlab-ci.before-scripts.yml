@@ -7,20 +7,22 @@
     - >
       if [ -f "secrets/default.yml" ]; then
         echo vault_secrets.sh secrets/default.yml ...
-        vault_secrets.sh secrets/default.yml --debug >.secrets && . .secrets && rm .secrets
+        vault_secrets.sh secrets/default.yml >.secrets && . .secrets && rm .secrets
       fi
     - >
       if [ -f "secrets/${ENVIRONMENT}.yml" ]; then
-        echo secrets/${ENVIRONMENT}.yml ...
-        cat secrets/${ENVIRONMENT}.yml | envsubst > secrets/.${ENVIRONMENT}.yml && vault_secrets.sh secrets/.${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets && rm secrets/.${ENVIRONMENT}.yml
+        echo vault_secrets.sh secrets/${ENVIRONMENT}.yml ...
+        vault_secrets.sh secrets/${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets
       fi
     - >
       if [ -f "$CI_PROJECT_DIR/environment/default.env" ]; then
-        set -a && cat $CI_PROJECT_DIR/environment/default.env | envsubst | grep --invert-match --extended-regexp --regexp "=(''|\"\"){0,1}$" --regexp "=(''|\"\"){0,1}\s*#.*$" >.env && cat .env && . .env && rm .env && set +a
+        echo source $CI_PROJECT_DIR/environment/default.env
+        set -a && source $CI_PROJECT_DIR/environment/default.env && set +a
       fi
     - >
       if [ -f "$CI_PROJECT_DIR/environment/${ENVIRONMENT}.env" ]; then
-        set -a && cat $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env | envsubst | egrep --invert-match --extended-regexp --regexp "=(''|\"\"){0,1}$" --regexp "=(''|\"\"){0,1}\s*#.*$"  >.env && cat .env && . .env && rm .env && set +a
+        echo source $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env
+        set -a && source $CI_PROJECT_DIR/environment/${ENVIRONMENT}.env && set +a
       fi
     - download-secure-files
     - >
