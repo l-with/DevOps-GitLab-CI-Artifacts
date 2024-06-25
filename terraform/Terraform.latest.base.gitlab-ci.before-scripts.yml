@@ -6,10 +6,12 @@
       echo ENVIRONMENT: ${ENVIRONMENT}
     - >
       if [ -f "secrets/default.yml" ]; then
+        echo vault_secrets.sh secrets/default.yml ...
         vault_secrets.sh secrets/default.yml --debug >.secrets && . .secrets && rm .secrets
       fi
     - >
       if [ -f "secrets/${ENVIRONMENT}.yml" ]; then
+        echo secrets/${ENVIRONMENT}.yml ...
         cat secrets/${ENVIRONMENT}.yml | envsubst > secrets/.${ENVIRONMENT}.yml && vault_secrets.sh secrets/.${ENVIRONMENT}.yml >.secrets && . .secrets && rm .secrets && rm secrets/.${ENVIRONMENT}.yml
       fi
     - >
