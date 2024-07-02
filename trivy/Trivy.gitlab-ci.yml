@@ -38,7 +38,7 @@ trivy_scan:
     - echo scan image $FULL_IMAGE_NAME
     - trivy --version
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
-    - time trivy image --clear-cache
+    - trivy clean --scan-cache
     # update vulnerabilities db
     - time trivy image --download-db-only --no-progress
     # Build reports
