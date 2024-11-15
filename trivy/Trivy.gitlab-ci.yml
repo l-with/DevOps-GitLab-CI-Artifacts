@@ -40,14 +40,14 @@ trivy_scan:
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
     - trivy clean --scan-cache
     # update vulnerabilities db
-    - time trivy image --download-db-only --no-progress --db-repository gitlab.with.de:5050/packages-and-registries/container-registry/ghcr.io_aquasecurity/trivy-db
+    # - time trivy image --download-db-only --no-progress --db-repository gitlab.with.de:5050/packages-and-registries/container-registry/ghcr.io_aquasecurity/trivy-db
     # Build reports
     - time mkdir .trivy-reports
     - time trivy image --exit-code 0 --no-progress --format template --template "@html.tpl" --output .trivy-reports/gl-container-scanning-report.html "$FULL_IMAGE_NAME"
     - time trivy image --exit-code 0 --no-progress --format template --template "@gitlab.tpl" --output .trivy-reports/gl-container-scanning-report.json "$FULL_IMAGE_NAME"
     - time trivy image --exit-code 0 --no-progress --format template --template "@junit.tpl" --output .trivy-reports/gl-container-scanning-report.xml "$FULL_IMAGE_NAME"
     # Prints full report
-    - time trivy image --exit-code 0 --no-progress "$FULL_IMAGE_NAME"
+    - time trivy image --exit-code 0 --no-progress --db-repository gitlab.with.de:5050/packages-and-registries/container-registry/ghcr.io_aquasecurity/trivy-db "$FULL_IMAGE_NAME"
   cache:
     paths:
       - html.tpl
@@ -75,9 +75,9 @@ check:
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
     - trivy clean --scan-cache
     # update vulnerabilities db
-    - time trivy image --download-db-only --no-progress --db-repository gitlab.with.de:5050/packages-and-registries/container-registry/ghcr.io_aquasecurity/trivy-db
+    # - time trivy image --download-db-only --no-progress --db-repository gitlab.with.de:5050/packages-and-registries/container-registry/ghcr.io_aquasecurity/trivy-db
     # Fail on critical vulnerabilities
-    - time trivy image --exit-code 1 --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
+    - time trivy image --exit-code 1 --severity CRITICAL --no-progress --db-repository gitlab.with.de:5050/packages-and-registries/container-registry/ghcr.io_aquasecurity/trivy-db "$FULL_IMAGE_NAME"
   allow_failure:
     exit_codes: 1
   cache:
