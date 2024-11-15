@@ -40,7 +40,7 @@ trivy_scan:
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
     - trivy clean --scan-cache
     # update vulnerabilities db
-    - time trivy image --download-db-only --no-progress
+    - time trivy image --download-db-only --no-progress --db-repository gitlab.with.de:5050/packages-and-registries/container-registry/ghcr.io_aquasecurity/trivy-db
     # Build reports
     - time mkdir .trivy-reports
     - time trivy image --exit-code 0 --no-progress --format template --template "@html.tpl" --output .trivy-reports/gl-container-scanning-report.html "$FULL_IMAGE_NAME"
