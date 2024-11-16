@@ -73,7 +73,7 @@ check:
     # cache cleanup is needed when scanning images with the same tags, it does not remove the database
     - trivy clean --scan-cache
     # Fail on critical vulnerabilities
-    - time trivy image --db-repository ${TRIVY_DB_IMAGE} --exit-code 1 --severity CRITICAL --no-progress"$FULL_IMAGE_NAME"
+    - time trivy image --db-repository ${TRIVY_DB_IMAGE} --exit-code 1 --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
   allow_failure:
     exit_codes: 1
   cache:
