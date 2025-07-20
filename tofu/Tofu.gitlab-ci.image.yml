@@ -1,0 +1,4 @@
+".opentofu:plan_with_image":
+  extends: [.opentofu:plan]
+  image:
+    name: $OPENTOFU_DEVOPS_IMAGE
