@@ -1,4 +1,10 @@
-".opentofu:plan_with_image":
+".opentofu:plan_with_OPENTOFU_DEVOPS_IMAGE":
   extends: [.opentofu:plan]
+  image:
+    name: $OPENTOFU_DEVOPS_IMAGE
+
+
+".opentofu:apply_with_OPENTOFU_DEVOPS_IMAGE":
+  extends: [.opentofu:apply]
   image:
     name: $OPENTOFU_DEVOPS_IMAGE
