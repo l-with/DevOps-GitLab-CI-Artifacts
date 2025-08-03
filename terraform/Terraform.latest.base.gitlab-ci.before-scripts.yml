@@ -112,6 +112,15 @@
   - ansible-galaxy collection install --requirements-file $ANSIBLE_PATH/ansible-requirements.yml --timeout $ANSIBLE_GALAXY_TIMEOUT
   - export LE_CERT_PACKAGE_URL_TEMPLATE="${CI_API_V4_URL}/projects/${LE_PROJECT_ID}/packages/generic/le-certs/42/le_#_le_FQDN_#.zip"
 
+.before_script_hosts_ini:
+  before_script:
+    - >
+      echo curl --no-progress-meter --remote-name --user "gitlab-ci-token:${CI_JOB_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${TF_STATE_NAME}" || true
+    - >
+      curl --no-progress-meter --remote-name --user "gitlab-ci-token:${CI_JOB_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${TF_STATE_NAME}" || true
+    - cat ${TF_STATE_NAME} | jq .outputs.hosts_ini.value --raw-output >hosts.ini
+    - cat hosts.ini
+
 .before_script_echo_CI_COMMIT:
   .before_script:
     - >
